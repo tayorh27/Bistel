@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Bistel</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_auth">AuthActivity</string>
+    <string name="title_activity_signin">Sign In</string>
+    <string name="title_activity_register">Register</string>
+    <string name="title_activity_rider">Bistel Ride</string>
+    <string name="drawer_open">Menu opened</string>
+    <string name="drawer_close">Menu closed</string>
+    <string name="title_activity_profile">Update Profile</string>
+    <string name="action_change_password">Change Password</string>
+    <string name="title_activity_change_password">Change Password</string>
+    <string name="terms"><u>Agree to terms and conditions</u></string>
+    <string name="termsShow">As a responsible company, Bistel is committed to protect and respect the privacy of its users. Our Privacy Policy captures and processes the personal information that is provided to us voluntarily by the user or is captured by us when you visit our website. The information we capture helps us in identifying you and understanding your requirements carefully. The personal information captured by us includes username, IP address, phone number, location, email address and so on. Our database maintain the records of all these captured personal information.<br />As a responsible company, Bistel is committed to protect and respect the privacy of its users. Our Privacy Policy captures and processes the personal information that is provided to us voluntarily by the user or is captured by us when you visit our website. The information we capture helps us in identifying you and understanding your requirements carefully. The personal information captured by us includes username, IP address, phone number, location, email address and so on. Our database maintain the records of all these captured personal information. </string>
+    <string name="forgot">Forgot Password</string>
+    <string name="title_activity_support">Support</string>
+    <string name="error_timeout">No Internet Connection</string>
+    <string name="error_auth">Authentication Failed</string>
+    <string name="error_server">Server Error</string>
+    <string name="error_network">Network Connection Failed</string>
+    <string name="error_parse">Parsing Failed</string>
+    <string name="title_activity_driver_register">Register</string>
+
+</resources>
