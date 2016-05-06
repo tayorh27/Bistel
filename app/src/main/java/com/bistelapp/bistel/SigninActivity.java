@@ -87,6 +87,8 @@ public class SigninActivity extends ActionBarActivity implements View.OnClickLis
                 loginRepo = new LoginRepo(SigninActivity.this,email,password);
                 loginRepo.LogRiderIn();
             }
+        }else if(dr.contentEquals("driver")){
+
         }
     }
 

@@ -1,9 +1,10 @@
 package com.bistelapp.bistel.json.rider;
 
 import android.net.Uri;
+import android.widget.Toast;
 
 import com.bistelapp.bistel.AppConfig;
-import com.bistelapp.bistel.informations.rider.online_driver;
+import com.bistelapp.bistel.informations.driver.driver_info;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,18 +18,9 @@ import java.util.List;
  */
 public class Parser {
 
-    public static ArrayList<online_driver> parseJSONResponse(JSONArray jsonArray) {
+    public static ArrayList<driver_info> parseJSONResponse(JSONArray jsonArray) {
 
-        ArrayList<online_driver> customData = new ArrayList<>();
-
-        String serverUrl = AppConfig.RIDER_WEB_URL + "images/";
-        List<String> customUsername = new ArrayList<>();
-        List<String> customMobile = new ArrayList<>();
-        List<String> customImage = new ArrayList<>();
-        List<String> customCategory = new ArrayList<>();
-        List<String> customId = new ArrayList<>();
-
-        String[] uses, mobs, imgs, cats, ids;
+        ArrayList<driver_info> customData = new ArrayList<>();
 
         if (jsonArray != null && jsonArray.length() > 0) {
 
@@ -37,46 +29,24 @@ public class Parser {
                 try {
                     JSONObject json = jsonArray.getJSONObject(i);
 
-                    customId.add(json.getString("id"));
-                    customUsername.add(json.getString("username"));
-                    customMobile.add(json.getString("mobile"));
-                    customImage.add(json.getString("image"));
-                    customCategory.add(json.getString("category"));
+                    int id = json.getInt("id");
+                    String firstname = json.getString("first_name");
+                    String lastname = json.getString("last_name");
+                    String email = json.getString("email");
+                    String plate_number = json.getString("plate_number");
+                    String mobile = json.getString("mobile");
+                    String image = json.getString("image");
+                    String current_location = json.getString("current_location");
+
+                    driver_info current = new driver_info(id,firstname,lastname,email,plate_number,mobile,"",image,"",current_location,"");
+                    customData.add(current);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
-
-            uses = new String[jsonArray.length()];
-            mobs = new String[jsonArray.length()];
-            imgs = new String[jsonArray.length()];
-            cats = new String[jsonArray.length()];
-            ids = new String[jsonArray.length()];
-
-            for (int j = 0; j < customUsername.size(); j++) {
-
-                uses[j] = customUsername.get(j);
-                mobs[j] = customMobile.get(j);
-                imgs[j] = customImage.get(j);
-                cats[j] = customCategory.get(j);
-                ids[j] = customId.get(j);
-            }
-            for (int i = 0; i < mobs.length; i++) {
-
-                String get_id = ids[i];
-                String get_username = uses[i];
-                String get_mobile = mobs[i];
-                String get_image = serverUrl + Uri.encode(imgs[i]);
-                String get_category = cats[i];
-
-                online_driver current = new online_driver(get_id, get_username, get_mobile, get_category, get_image);
-                customData.add(current);
-
-            }
-
         } else {
-            //customData = MyApplication.getWriteableDatabase().getAllFavorites();
+
         }
 
         return customData;

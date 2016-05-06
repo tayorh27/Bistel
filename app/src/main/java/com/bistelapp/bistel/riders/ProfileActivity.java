@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.bistelapp.bistel.R;
 import com.bistelapp.bistel.database.rider.UserLocalStorage;
 import com.bistelapp.bistel.informations.rider.rider_info;
+import com.bistelapp.bistel.internet.rider.UpdateRepo;
 import com.bistelapp.bistel.utility.General;
 
 public class ProfileActivity extends ActionBarActivity implements View.OnClickListener {
@@ -24,6 +25,8 @@ public class ProfileActivity extends ActionBarActivity implements View.OnClickLi
 
     TextView eEmail;
     UserLocalStorage userLocalStorage;
+
+    UpdateRepo updateRepo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +80,12 @@ public class ProfileActivity extends ActionBarActivity implements View.OnClickLi
         switch (v.getId()){
             case R.id.update:
                 if(general.rider_check_all(false,"first name","last name","mobile",etFirst,etLast,etMobile)){
-                    //do something
+                    String first = etFirst.getText().toString();
+                    String last = etLast.getText().toString();
+                    String mobile = etMobile.getText().toString();
+
+                    updateRepo = new UpdateRepo(ProfileActivity.this,first,last,mobile);
+                    updateRepo.updateRider();
                 }
                 break;
         }

@@ -19,6 +19,7 @@ import com.bistelapp.bistel.R;
 import com.bistelapp.bistel.SigninActivity;
 import com.bistelapp.bistel.internet.rider.RegisterRepo;
 import com.bistelapp.bistel.utility.General;
+import com.onesignal.OneSignal;
 
 public class RegisterActivity extends ActionBarActivity implements View.OnClickListener{
 
@@ -103,7 +104,17 @@ public class RegisterActivity extends ActionBarActivity implements View.OnClickL
                     String mobile = etMobile.getText().toString();
                     String pass = etPassword.getText().toString();
                     registerRepo = new RegisterRepo(RegisterActivity.this,fn,ln,email,mobile,pass);
-                    registerRepo.Register();
+
+                    OneSignal.idsAvailable(new OneSignal.IdsAvailableHandler() {
+                        @Override
+                        public void idsAvailable(String s, String s2) {
+                            if (s != null) {
+                                registerRepo.Register(s);
+                            }
+                        }
+                    });
+
+
                 }
                 break;
             case R.id.agreement:

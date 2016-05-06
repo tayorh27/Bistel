@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.bistelapp.bistel.R;
+import com.bistelapp.bistel.internet.rider.UpdatePassword;
 import com.bistelapp.bistel.utility.General;
 
 public class ChangePasswordActivity extends ActionBarActivity implements View.OnClickListener {
@@ -18,6 +19,8 @@ public class ChangePasswordActivity extends ActionBarActivity implements View.On
     General general;
     EditText et1,et2,et3;
     Button change_password;
+
+    UpdatePassword updatePassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +63,11 @@ public class ChangePasswordActivity extends ActionBarActivity implements View.On
         switch (v.getId()){
             case R.id.change_:
                 if(general.rider_check_all(true,"current password","new password","confirm password",et1,et2,et3)){
+                    String cP = et1.getText().toString();
+                    String cnP = et3.getText().toString();
 
+                    updatePassword = new UpdatePassword(ChangePasswordActivity.this,cnP,cP);
+                    updatePassword.updatePassword();
                 }
                 break;
         }

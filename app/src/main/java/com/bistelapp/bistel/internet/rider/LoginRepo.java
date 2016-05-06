@@ -52,20 +52,30 @@ public class LoginRepo {
                 try {
                     JSONObject object = response.getJSONObject(0);
                     String get_password = object.getString("password");
-                    if (get_password.contentEquals(password)){
-                        int id = object.getInt("id");
-                        String first = object.getString("first_name");
-                        String last = object.getString("last_name");
-                        String email = object.getString("email");
-                        String mobile = object.getString("mobile");
-                        String current_location = object.getString("current_location");
-
-                        rider_info current = new rider_info(id,first,last,email,mobile,get_password,current_location);
-                        userLocalStorage.storeUser(current);
-                        userLocalStorage.setUserLogged(true);
+                    String get_active = object.getString("active");
+                    String email_activated = object.getString("email_activated");
+                    if(!get_active.contentEquals("true")){
                         general.dismissProgressDialog();
+                        general.displayAlertDialog("Login Error", "Your account has been deactivated!");
+                    }else if (get_password.contentEquals(password)){
+                        if(email_activated.contentEquals("false")){
+                            general.dismissProgressDialog();
+                            general.displayAlertDialog("Login Error", "Your email has not been activated!");
+                        }else {
+                            int id = object.getInt("id");
+                            String first = object.getString("first_name");
+                            String last = object.getString("last_name");
+                            String email = object.getString("email");
+                            String mobile = object.getString("mobile");
+                            String current_location = object.getString("current_location");
 
-                        context.startActivity(new Intent(context, RiderActivity.class));
+                            rider_info current = new rider_info(id, first, last, email, mobile, get_password, current_location);
+                            userLocalStorage.storeUser(current);
+                            userLocalStorage.setUserLogged(true);
+                            general.dismissProgressDialog();
+
+                            context.startActivity(new Intent(context, RiderActivity.class));
+                        }
                     }else {
                         general.dismissProgressDialog();
                         general.displayAlertDialog("Login Error", "incorrect email or password");

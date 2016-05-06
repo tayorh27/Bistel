@@ -21,21 +21,32 @@ public class DriverLocalStorage {
 
     public void storeDriver(driver_info ri){
         SharedPreferences.Editor editor = localStore.edit();
+        editor.putInt("id",ri.id);
         editor.putString("firstname",ri.firstname);
         editor.putString("lastname",ri.lastname);
         editor.putString("plate_number",ri.plate_number);
         editor.putString("mobile",ri.mobile);
         editor.putString("password",ri.password);
+        editor.putString("image",ri.image);
+        editor.putString("status",ri.status);
+        editor.putString("current_location",ri.current_location);
+        editor.putString("distance",ri.distance);
         editor.apply();
     }
 
     public driver_info getDriverInfo(){
+        int id = localStore.getInt("id",0);
         String firstname = localStore.getString("firstname","");
         String lastname = localStore.getString("lastname","");
+        String email = localStore.getString("email","");
         String plate_number = localStore.getString("plate_number","");
         String mobile = localStore.getString("mobile","");
         String password = localStore.getString("password","");
-        driver_info ri = new driver_info(firstname,lastname,plate_number,mobile,password);
+        String image = localStore.getString("image","");
+        String status = localStore.getString("status","");
+        String current_location = localStore.getString("current_location","");
+        String distance = localStore.getString("distance","");
+        driver_info ri = new driver_info(id,firstname,lastname,email,plate_number,mobile,password,image,status,current_location,distance);
         return ri;
     }
 

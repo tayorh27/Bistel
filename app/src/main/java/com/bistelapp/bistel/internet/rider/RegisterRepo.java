@@ -20,6 +20,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * Created by tayo on 3/30/2016.
@@ -45,7 +46,7 @@ public class RegisterRepo {
         general = new General(context);
     }
 
-    public void Register(){
+    public void Register(final String player_id){
 
         general.displayProgressDialog("Registering rider...");
 
@@ -61,10 +62,12 @@ public class RegisterRepo {
                         context.startActivity(new Intent(context, MainActivity.class));
                         general.dismissProgressDialog();
                     }else if(success == 2){
-                        Toast.makeText(context, "Registration failed. Email already exist.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, "Registration failed. Email address already exist.", Toast.LENGTH_LONG).show();
                         general.dismissProgressDialog();
-                    }
-                    else if(success == 0){
+                    }else if(success == 3){
+                        general.dismissProgressDialog();
+                        general.displayAlertDialog("Error","Registration failed.\n A device can't have more than one account");
+                    }else if(success == 0){
                         Toast.makeText(context, "Registration failed. try again.", Toast.LENGTH_LONG).show();
                         general.dismissProgressDialog();
                     }
@@ -92,6 +95,12 @@ public class RegisterRepo {
                 params.put("email",email);
                 params.put("mobile",mobile);
                 params.put("password",password);
+                params.put("voucher",first_name+new Random().nextInt(500));
+                params.put("voucher_status","unused");
+                params.put("active","true");
+                params.put("email_activated","false");
+                params.put("device_id",general.getDeviceID());
+                params.put("playerID",player_id);
                 return params;
             }
         };

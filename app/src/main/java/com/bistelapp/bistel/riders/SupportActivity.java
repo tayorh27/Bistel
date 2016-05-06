@@ -11,11 +11,14 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.bistelapp.bistel.R;
+import com.bistelapp.bistel.database.rider.UserLocalStorage;
+import com.bistelapp.bistel.informations.rider.rider_info;
 
 public class SupportActivity extends ActionBarActivity implements View.OnClickListener {
 
 
     TextView call,email;
+    UserLocalStorage userLocalStorage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +30,8 @@ public class SupportActivity extends ActionBarActivity implements View.OnClickLi
 
         call.setOnClickListener(this);
         email.setOnClickListener(this);
+
+        userLocalStorage = new UserLocalStorage(SupportActivity.this);
 
     }
 
@@ -62,11 +67,12 @@ public class SupportActivity extends ActionBarActivity implements View.OnClickLi
                 startActivity(intent);
                 break;
             case R.id.tv_e:
+                rider_info ri = userLocalStorage.getRiderInfo();
                 Intent intent1 = new Intent(Intent.ACTION_SEND);
                 intent1.putExtra(Intent.EXTRA_EMAIL, "bistelint@gmail.com");
-                intent1.putExtra(Intent.EXTRA_SUBJECT, "");
+                intent1.putExtra(Intent.EXTRA_SUBJECT, "Support from "+ri.firstname+" "+ri.lastname);
                 intent1.putExtra(Intent.EXTRA_TEXT, "");
-                intent1.setType("plain/text");
+                intent1.setType("message/rfc822");
                 startActivity(intent1);
                 break;
         }

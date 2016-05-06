@@ -46,7 +46,18 @@
                 android:layout_marginTop="10dp"
                 android:text="Plate Number"
                 android:textSize="15sp"/>
+
         </RelativeLayout>
+
+        <TextView
+            android:id="@+id/kilometer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/view1"
+            android:layout_margin="5dp"
+            android:text="20 km"
+            android:layout_alignParentRight="true"
+            android:textSize="12sp"/>
 
         <RelativeLayout
             android:id="@+id/topbar"
@@ -58,7 +69,7 @@
                 android:id="@+id/location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="1dp"
                 android:text="University of Lagos"
                 android:textSize="15sp"/>
 
@@ -68,24 +79,34 @@
             android:id="@+id/sidebar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true">
+            android:layout_toRightOf="@+id/view1"
+            android:layout_margin="15dp">
 
             <Button
                 android:id="@+id/book"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginLeft="25dp"
                 android:text="book" />
 
             <Button
                 android:id="@+id/request"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:layout_toRightOf="@+id/book"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="25dp"
+                android:layout_below="@+id/book"
                 android:text="Request now" />
+
+            <!--<ImageView-->
+                <!--android:id="@+id/loc"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_below="@+id/request"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:src="@drawable/abc_btn_radio_to_on_mtrl_015"/>-->
+
 
         </RelativeLayout>
 

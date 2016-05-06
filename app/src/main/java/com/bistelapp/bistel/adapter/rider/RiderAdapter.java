@@ -1,8 +1,6 @@
 package com.bistelapp.bistel.adapter.rider;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.LayoutInflater;
@@ -10,9 +8,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.android.volley.toolbox.ImageLoader;
+import com.bistelapp.bistel.AppConfig;
 import com.bistelapp.bistel.R;
 import com.bistelapp.bistel.callbacks.rider.OnClickListener;
-import com.bistelapp.bistel.informations.rider.online_driver;
+import com.bistelapp.bistel.informations.driver.driver_info;
+import com.bistelapp.bistel.network.VolleySingleton;
 import com.bistelapp.bistel.utility.General;
 
 import java.util.ArrayList;
@@ -24,19 +25,24 @@ public class RiderAdapter extends RecyclerView.Adapter<RiderAdapter.RiderHolder>
 
     LayoutInflater inflater;
     Context context;
-    ArrayList<online_driver> info = new ArrayList<>();
+    ArrayList<driver_info> info = new ArrayList<>();
     General general;
     OnClickListener clickListener;
+    VolleySingleton volleySingleton;
+    ImageLoader imageLoader;
+    String imageUrl = AppConfig.DRIVER_WEB_URL+"drivers_images/";
 
     public RiderAdapter(Context context, OnClickListener clickListener){
         this.context = context;
         this.clickListener = clickListener;
         inflater = LayoutInflater.from(context);
         general = new General(context);
+        volleySingleton = VolleySingleton.getInstance();
+        imageLoader = volleySingleton.getImageLoader();
     }
 
-    public void setList(ArrayList<online_driver> info){
-        this.info = info;
+    public void setList(ArrayList<driver_info> information){
+        this.info = information;
         notifyDataSetChanged();
     }
 
@@ -49,10 +55,12 @@ public class RiderAdapter extends RecyclerView.Adapter<RiderAdapter.RiderHolder>
 
     @Override
     public void onBindViewHolder(RiderHolder riderHolder, int i) {
-        online_driver current = info.get(i);
-        riderHolder.fn.setText(current.first_name);
-        riderHolder.car_plate.setText(current.car_plate_number);
-        riderHolder.location.setText(current.location);
+        driver_info current = info.get(i);
+
+        riderHolder.fn.setText(current.firstname);
+        riderHolder.car_plate.setText(current.plate_number);
+        riderHolder.location.setText(current.current_location);
+        riderHolder.distance.setText(current.distance);
 
     }
 
@@ -63,7 +71,7 @@ public class RiderAdapter extends RecyclerView.Adapter<RiderAdapter.RiderHolder>
 
     class RiderHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        TextView fn, car_plate,location;
+        TextView fn, car_plate,location,distance;
         Button book,request;
 
         public RiderHolder(View itemView) {
@@ -72,6 +80,7 @@ public class RiderAdapter extends RecyclerView.Adapter<RiderAdapter.RiderHolder>
             fn = (TextView)itemView.findViewById(R.id.first);
             car_plate = (TextView)itemView.findViewById(R.id.plate);
             location = (TextView)itemView.findViewById(R.id.location);
+            distance = (TextView)itemView.findViewById(R.id.kilometer);
             book = (Button)itemView.findViewById(R.id.book);
             request = (Button)itemView.findViewById(R.id.request);
 
@@ -89,7 +98,7 @@ public class RiderAdapter extends RecyclerView.Adapter<RiderAdapter.RiderHolder>
         public void onClick(View v) {
             switch (v.getId()){
                 case R.id.request:
-                    online_driver current = info.get(getPosition());
+                    driver_info current = info.get(getPosition());
                     general.displayAlertDialog("Confirm", "Are you sure you want to request for this driver now?", current.mobile);
                     break;
             }

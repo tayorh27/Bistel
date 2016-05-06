@@ -26,17 +26,29 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bistelapp.bistel.GPSService;
 import com.bistelapp.bistel.R;
 import com.bistelapp.bistel.adapter.rider.RiderAdapter;
+import com.bistelapp.bistel.async.rider.TaskLoadOnlineDrivers;
+import com.bistelapp.bistel.callbacks.rider.LoadAddressLocation;
+import com.bistelapp.bistel.callbacks.rider.LoadDistanceDuration;
+import com.bistelapp.bistel.callbacks.rider.LoadOnlineDrivers;
 import com.bistelapp.bistel.callbacks.rider.OnClickListener;
+import com.bistelapp.bistel.database.rider.UserLocalStorage;
+import com.bistelapp.bistel.informations.driver.driver_info;
 import com.bistelapp.bistel.informations.rider.online_driver;
+import com.bistelapp.bistel.informations.rider.rider_info;
+import com.bistelapp.bistel.internet.rider.FetchOnlineDrivers;
+import com.bistelapp.bistel.internet.rider.GetDistanceDuration;
+import com.bistelapp.bistel.internet.rider.GetLocationFromServer;
 import com.bistelapp.bistel.utility.General;
+import com.onesignal.OneSignal;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
 
-public class RiderActivity extends ActionBarActivity implements NavigationDrawerCallbacks, OnClickListener {
+public class RiderActivity extends ActionBarActivity implements NavigationDrawerCallbacks, OnClickListener, LoadOnlineDrivers, LoadDistanceDuration, LoadAddressLocation {
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -48,10 +60,13 @@ public class RiderActivity extends ActionBarActivity implements NavigationDrawer
     private Button refresh;
     private TextView check;
     private General general;
-    private int year, month, day;
-    private DatePicker datePicker;
-    private Calendar calendar;
-    private String setDate = "";
+    GPSService mGPSService;
+
+    private UserLocalStorage userLocalStorage;
+    private ArrayList<driver_info> customData = new ArrayList<>();
+    private FetchOnlineDrivers fetchOnlineDrivers;
+    private GetLocationFromServer getLocationFromServer;
+    private GetDistanceDuration getDistanceDuration;
 
 
     @Override
@@ -61,6 +76,8 @@ public class RiderActivity extends ActionBarActivity implements NavigationDrawer
         mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(mToolbar);
         general = new General(RiderActivity.this);
+        userLocalStorage = new UserLocalStorage(RiderActivity.this);
+        mGPSService = new GPSService(this);
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.fragment_drawer);
@@ -68,24 +85,79 @@ public class RiderActivity extends ActionBarActivity implements NavigationDrawer
         // Set up the drawer.
         mNavigationDrawerFragment.setup(R.id.fragment_drawer, (DrawerLayout) findViewById(R.id.drawer), mToolbar);
 
-        calendar = Calendar.getInstance();
-        year = calendar.get(Calendar.YEAR);
-
-        month = calendar.get(Calendar.MONTH);
-        day = calendar.get(Calendar.DAY_OF_MONTH);
-        setDate = showDate(year, month+1, day);
-
         refresh = (Button)findViewById(R.id.get_driver);
         check = (TextView)findViewById(R.id.textView);
 
-        refresh.setVisibility(View.GONE);
         check.setVisibility(View.GONE);
 
         adapter = new RiderAdapter(RiderActivity.this, this);
         recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(RiderActivity.this));
         recyclerView.setAdapter(adapter);
-        adapter.setList(list());
+        fetchOnlineDrivers = new FetchOnlineDrivers(RiderActivity.this,this);
+
+        refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rider_info ri = userLocalStorage.getRiderInfo();
+                  runOnStart();
+               // startContactingOnlineDrivers();
+            }
+        });
+
+        distanceDuration();
+        showPlayerID();
+
+    }
+
+    private void distanceDuration(){
+        getDistanceDuration = new GetDistanceDuration(RiderActivity.this,"palmgrove,Lagos,Nigeria","bariga",this);
+        getDistanceDuration.getDistanceDuration();
+    }
+
+    private void runOnStart() {
+        general.displayProgressDialog("getting location");
+        String address = "";
+        mGPSService.getLocation();
+
+        if (mGPSService.isLocationAvailable == false) {
+
+            // Here you can ask the user to try again, using return; for that
+            Toast.makeText(this, "Your location is not available, please try again.", Toast.LENGTH_SHORT).show();
+            general.dismissProgressDialog();
+            return;
+
+            // Or you can continue without getting the location, remove the return; above and uncomment the line given below
+            // address = "Location not available";
+        } else {
+
+            // Getting location co-ordinates
+            double latitude = mGPSService.getLatitude();
+            double longitude = mGPSService.getLongitude();
+            Toast.makeText(this, "Latitude:" + latitude + " | Longitude: " + longitude, Toast.LENGTH_LONG).show();
+
+            //address = mGPSService.getLocationAddress();
+            //address = mGPSService.getLocation_(latitude,longitude);
+
+            getLocationFromServer = new GetLocationFromServer(RiderActivity.this,latitude,longitude,this);
+            getLocationFromServer.UpdateLocation();
+            //address = getLocationFromServer.getLocation();
+
+
+            general.dismissProgressDialog();
+
+        }
+
+        //Toast.makeText(RiderActivity.this, "Your address is: " + address, Toast.LENGTH_LONG).show();
+
+        // make sure you close the gps after using it. Save user's battery power
+        mGPSService.closeGPS();
+        general.dismissProgressDialog();
+
+    }
+
+    private void startContactingOnlineDrivers() {
+       fetchOnlineDrivers.OnlineDrivers();
     }
 
     @Override
@@ -105,7 +177,6 @@ public class RiderActivity extends ActionBarActivity implements NavigationDrawer
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         }
-
     }
 
 
@@ -121,28 +192,6 @@ public class RiderActivity extends ActionBarActivity implements NavigationDrawer
         return super.onCreateOptionsMenu(menu);
     }
 
-    private ArrayList<online_driver> showList(ArrayList<online_driver> l){
-        if(!l.isEmpty()){
-            refresh.setVisibility(View.GONE);
-            check.setVisibility(View.GONE);
-            return null;
-        }else {
-            return l;
-        }
-    }
-
-    private ArrayList<online_driver> list(){
-
-        ArrayList<online_driver> current = new ArrayList<>();
-        current.add(new online_driver("Aderinsola","IKJABCDE","Apartment","avater.jpg","08189884270"));
-        current.add(new online_driver("Adetayo","HYKISDK","Mariere Hall","avater.jpg","08166076456"));
-        current.add(new online_driver("Jesutofunmi","JLHDUIH","Esca Chapel","avater.jpg","08168884202"));
-        current.add(new online_driver("Karo","LIHIDHI","Always on my bed","avater.jpg","08089541225"));
-        current.add(new online_driver("Kay","KIJDIFF","Outside school","avater.jpg","08169066589"));
-        current.add(new online_driver("Ede","IJHDIFHI","SUB with babes","avater.jpg","07080119470"));
-        return  current;
-    }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -155,34 +204,11 @@ public class RiderActivity extends ActionBarActivity implements NavigationDrawer
         if(id == android.R.id.home){
             NavUtils.navigateUpFromSameTask(this);
         }
+        if (id == R.id.action_refresh){
+            runOnStart();
+        }
 
         return super.onOptionsItemSelected(item);
-    }
-
-
-
-    @Override
-    protected Dialog onCreateDialog(int id) {
-        if(id == 999){
-            return new DatePickerDialog(this,mDate,year,month,day);
-        }
-        return null;
-    }
-
-
-
-    private String showDate(int year, int month, int day) {
-        String date1 = String.valueOf(new StringBuilder().append(day).append("/")
-                .append(month).append("/").append(year));
-
-
-        StringBuilder builder = new StringBuilder().append(day).append("/").append(month).append("/").append(year);
-//        date.setText(builder.toString());
-        return  builder.toString();
-    }
-
-    private void popupDate() {
-        showDialog(999);
     }
 
     public void displayAlertDialog(String title){
@@ -204,14 +230,6 @@ public class RiderActivity extends ActionBarActivity implements NavigationDrawer
         etDest = (EditText)view.findViewById(R.id.tv_dest);
         date = (Button)view.findViewById(R.id.date);
 
-        date.setText(setDate);
-        date.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popupDate();
-            }
-        });
-
 
 
         alertDialog.setButton("CANCEL", new DialogInterface.OnClickListener() {
@@ -232,20 +250,67 @@ public class RiderActivity extends ActionBarActivity implements NavigationDrawer
         alertDialog.show();
     }
 
+    public void showPlayerID(){
+        OneSignal.idsAvailable(new OneSignal.IdsAvailableHandler() {
+            @Override
+            public void idsAvailable(String s, String s2) {
+                Toast.makeText(RiderActivity.this, "player id = "+s, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
 
-    private DatePickerDialog.OnDateSetListener mDate = new DatePickerDialog.OnDateSetListener(){
-        @Override
-        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            showDate(year,monthOfYear,dayOfMonth);
-        }
-    };
+
+
 
     @Override
     public void OnClick(View view, int position) {
         switch (view.getId()){
             case R.id.book:
-                displayAlertDialog("Booking Details");
+                Bundle bundle = new Bundle();
+                driver_info di = customData.get(position);
+                bundle.putString("name",di.lastname+" "+di.firstname);
+                bundle.putString("mobile",di.mobile);
+                Intent intent = new Intent(RiderActivity.this, BookingActivity.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
+                //displayAlertDialog("Booking Details");
                 break;
+            case R.id.request:
+                break;
+        }
+    }
+
+    @Override
+    public void onLoadOnlineDrivers(ArrayList<driver_info> list) {
+        if(!list.isEmpty()){
+            customData = list;
+            adapter.setList(list);
+            refresh.setVisibility(View.GONE);
+            check.setVisibility(View.GONE);
+        }else {
+            refresh.setVisibility(View.VISIBLE);
+            check.setVisibility(View.VISIBLE);
+            check.setText("no driver available");
+        }
+        //general.dismissProgressDialog();
+    }
+
+    @Override
+    public void onLoadDistanceDuration(String distance, String duration) {
+        Toast.makeText(RiderActivity.this, "distance = "+distance+"\nduration = "+duration,Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onLoadAddressLocation(String location) {
+        if(location.contentEquals("")){
+            Toast.makeText(RiderActivity.this,"retrying to get location",Toast.LENGTH_LONG).show();
+            getLocationFromServer.UpdateLocation();
+        }else {
+            Toast.makeText(RiderActivity.this, "Location is - " + location, Toast.LENGTH_LONG).show();
+            rider_info ri = userLocalStorage.getRiderInfo();
+            rider_info current = new rider_info(ri.id, ri.firstname, ri.lastname, ri.email, ri.mobile, ri.password, location);
+            userLocalStorage.storeUser(current);
+            startContactingOnlineDrivers();
         }
     }
 }

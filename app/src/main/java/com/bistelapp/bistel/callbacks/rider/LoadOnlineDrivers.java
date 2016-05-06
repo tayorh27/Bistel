@@ -1,6 +1,6 @@
 package com.bistelapp.bistel.callbacks.rider;
 
-import com.bistelapp.bistel.informations.rider.online_driver;
+import com.bistelapp.bistel.informations.driver.driver_info;
 
 import java.util.ArrayList;
 
@@ -9,5 +9,5 @@ import java.util.ArrayList;
  */
 public interface LoadOnlineDrivers {
 
-    public void onLoadOnlineDrivers(ArrayList<online_driver> list);
+    public void onLoadOnlineDrivers(ArrayList<driver_info> list);
 }

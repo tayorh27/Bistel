@@ -30,7 +30,7 @@ public class DriverRegisterRepo {
     Context context;
     VolleySingleton volleySingleton;
     RequestQueue requestQueue;
-    private String url = AppConfig.DRIVER_WEB_URL;
+    private String url = AppConfig.DRIVER_WEB_URL+"Register.php";
     General general;
 
     public DriverRegisterRepo(Context context, String first_name,String last_name,String email,String plate_number, String mobile,String password){
@@ -61,7 +61,11 @@ public class DriverRegisterRepo {
                         Toast.makeText(context, "Registration successful. Login now", Toast.LENGTH_LONG).show();
                         context.startActivity(new Intent(context, MainActivity.class));
                         general.dismissProgressDialog();
-                    }else {
+                    }else if(success == 2){
+                        Toast.makeText(context, "Registration failed. Email address already exist.", Toast.LENGTH_LONG).show();
+                        general.dismissProgressDialog();
+                    } else if(success == 0){
+                        Toast.makeText(context, "Registration failed. try again.", Toast.LENGTH_LONG).show();
                         general.dismissProgressDialog();
                     }
                 } catch (JSONException e) {
@@ -89,6 +93,7 @@ public class DriverRegisterRepo {
                 params.put("plate_number",plate_number);
                 params.put("mobile",mobile);
                 params.put("password",password);
+                params.put("image","avatar.png");
                 params.put("status","offline");
                 params.put("current_location","unilag");
                 params.put("activate_driver","false");

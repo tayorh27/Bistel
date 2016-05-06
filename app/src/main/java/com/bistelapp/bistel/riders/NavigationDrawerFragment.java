@@ -28,7 +28,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bistelapp.bistel.DonateActivity2;
 import com.bistelapp.bistel.MainActivity;
+import com.bistelapp.bistel.PaymentActivity;
 import com.bistelapp.bistel.R;
 import com.bistelapp.bistel.database.rider.UserLocalStorage;
 import com.bistelapp.bistel.informations.rider.rider_info;
@@ -138,14 +140,18 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
                 startActivity(new Intent(getActivity(),ProfileActivity.class));
                 break;
             case 1://payment
+                startActivity(new Intent(getActivity(),PaymentActivity.class));
                 break;
             case 2://trip history
                 break;
             case 3://vouchers
+                startActivity(new Intent(getActivity(),VoucherActivity.class));
                 break;
             case 4://donate
+                startActivity(new Intent(getActivity(),DonateActivity2.class));
                 break;
             case 5://about
+                startActivity(new Intent(getActivity(),AboutActivity.class));
                 break;
             case 6://support
                 startActivity(new Intent(getActivity(),SupportActivity.class));
