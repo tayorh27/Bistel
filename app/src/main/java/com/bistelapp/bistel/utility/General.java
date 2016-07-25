@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.provider.Settings;
 import android.support.design.widget.TextInputLayout;
@@ -312,6 +313,12 @@ public class General {
         return returnSub;
     }
 
+    public void deletePreferenceData(SharedPreferences data){
+        SharedPreferences.Editor editor = data.edit();
+        editor.clear();
+        editor.apply();
+    }
+
     public ArrayList<driver_info> sortList(ArrayList<driver_info> getData){
         final ArrayList<driver_info> customData = new ArrayList<>();
 
@@ -323,5 +330,20 @@ public class General {
         }
 
         return customData;
+    }
+    //1456 + 4 = 1460
+    //1453 - 3 = 1450
+    //1455
+
+    public double totalAmount(double figure){
+        double r_totalAmount = 0;
+        String gLD = String.valueOf(figure);
+        int getLastDigit = Integer.parseInt(gLD.substring(gLD.length()-1));
+        if (getLastDigit < 5){
+            r_totalAmount = figure - getLastDigit;
+        }else if(getLastDigit > 5){
+            r_totalAmount = figure + (10 - getLastDigit);
+        }
+        return r_totalAmount;
     }
 }

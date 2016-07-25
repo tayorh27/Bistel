@@ -1,9 +1,5 @@
 package com.bistelapp.bistel.json.rider;
 
-import android.net.Uri;
-import android.widget.Toast;
-
-import com.bistelapp.bistel.AppConfig;
 import com.bistelapp.bistel.informations.driver.driver_info;
 
 import org.json.JSONArray;
@@ -11,7 +7,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by tayo on 4/2/2016.
@@ -37,8 +32,9 @@ public class Parser {
                     String mobile = json.getString("mobile");
                     String image = json.getString("image");
                     String current_location = json.getString("current_location");
+                    String playerID = json.getString("playerID");
 
-                    driver_info current = new driver_info(id,firstname,lastname,email,plate_number,mobile,"",image,"",current_location,"");
+                    driver_info current = new driver_info(id,firstname,lastname,email,plate_number,mobile,"",image,"",current_location,"",playerID);
                     customData.add(current);
 
                 } catch (JSONException e) {

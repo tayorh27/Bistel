@@ -1,21 +1,18 @@
 package com.bistelapp.bistel;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
+import com.bistelapp.bistel.internet.driver.DriverLoginRepo;
 import com.bistelapp.bistel.internet.rider.LoginRepo;
-import com.bistelapp.bistel.riders.RiderActivity;
 import com.bistelapp.bistel.utility.General;
 
 
@@ -28,6 +25,7 @@ public class SigninActivity extends ActionBarActivity implements View.OnClickLis
     TextInputLayout tEmail,tPassword;
     EditText etEmail,etPassword;
     LoginRepo loginRepo;
+    DriverLoginRepo driverLoginRepo;
 
 
     @Override
@@ -88,7 +86,12 @@ public class SigninActivity extends ActionBarActivity implements View.OnClickLis
                 loginRepo.LogRiderIn();
             }
         }else if(dr.contentEquals("driver")){
-
+            if(general.rider_check_all("email address","password",tEmail,etEmail,tPassword,etPassword)) {
+                String email = etEmail.getText().toString();
+                String password = etPassword.getText().toString();
+                driverLoginRepo = new DriverLoginRepo(SigninActivity.this,email,password);
+                driverLoginRepo.Login();
+            }
         }
     }
 

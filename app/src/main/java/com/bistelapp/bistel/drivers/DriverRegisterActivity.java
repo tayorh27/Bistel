@@ -1,10 +1,10 @@
 package com.bistelapp.bistel.drivers;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,8 +16,8 @@ import android.widget.TextView;
 import com.bistelapp.bistel.MainActivity;
 import com.bistelapp.bistel.R;
 import com.bistelapp.bistel.internet.driver.DriverRegisterRepo;
-import com.bistelapp.bistel.internet.rider.RegisterRepo;
 import com.bistelapp.bistel.utility.General;
+import com.onesignal.OneSignal;
 
 public class DriverRegisterActivity extends ActionBarActivity implements View.OnClickListener {
 
@@ -108,7 +108,13 @@ public class DriverRegisterActivity extends ActionBarActivity implements View.On
                     String mobile = etMobile.getText().toString();
                     String pass = etPassword.getText().toString();
                     registerRepo = new DriverRegisterRepo(DriverRegisterActivity.this,fn,ln,email,plate,mobile,pass);
-                    registerRepo.Register();
+                    OneSignal.idsAvailable(new OneSignal.IdsAvailableHandler() {
+                        @Override
+                        public void idsAvailable(String userId, String registrationId) {
+                            if(userId != null)
+                                registerRepo.Register(userId);
+                        }
+                    });
                 }
                 break;
             case R.id.agreement:

@@ -128,7 +128,7 @@ public class AT_Adapter extends RecyclerView.Adapter<AT_Adapter.PredictionHolder
             ArrayList resultList = new ArrayList(autocompletePredictions.getCount());
             while (iterator.hasNext()) {
                 AutocompletePrediction prediction = iterator.next();
-                resultList.add(new AT_Place(prediction.getPlaceId(), prediction.getDescription()));
+                resultList.add(new AT_Place(prediction.getPlaceId(), prediction.getFullText(null)));
             }
             autocompletePredictions.release();
 

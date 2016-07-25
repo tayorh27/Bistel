@@ -1,21 +1,17 @@
 package com.bistelapp.bistel.internet.rider;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.bistelapp.bistel.AppConfig;
-import com.bistelapp.bistel.adapter.rider.RiderAdapter;
 import com.bistelapp.bistel.callbacks.rider.LoadOnlineDrivers;
 import com.bistelapp.bistel.database.rider.UserLocalStorage;
 import com.bistelapp.bistel.informations.driver.driver_info;
 import com.bistelapp.bistel.informations.rider.rider_info;
-import com.bistelapp.bistel.json.rider.Parser;
 import com.bistelapp.bistel.network.VolleySingleton;
 import com.bistelapp.bistel.utility.General;
 
@@ -78,9 +74,11 @@ public class FetchOnlineDrivers {
                         String image = json.getString("image");
                         String current_location = json.getString("current_location");
                         String distance = getDistanceDuration.getDistance(current_location,ri.current_location);
+                        String status = json.getString("status");
+                        String playerID = json.getString("playerID");
 
 
-                        driver_info current = new driver_info(id,first_name,last_name,email,plate_number,mobile,"",image,"",current_location,distance);
+                        driver_info current = new driver_info(id,first_name,last_name,email,plate_number,mobile,"",image,status,current_location,distance,playerID);
                         customData.add(current);
                     }
 

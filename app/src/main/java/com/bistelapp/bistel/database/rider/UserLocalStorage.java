@@ -28,6 +28,10 @@ public class UserLocalStorage {
         editor.putString("mobile",ri.mobile);
         editor.putString("password",ri.password);
         editor.putString("current_location",ri.current_location);
+        editor.putString("voucher",ri.voucher);
+        editor.putString("voucher_status",ri.voucher_status);
+        editor.putString("playerID",ri.playerID);
+        editor.putFloat("voucher_code_percent",ri.voucher_code_percent);
         editor.apply();
     }
 
@@ -39,7 +43,11 @@ public class UserLocalStorage {
         String mobile = localStore.getString("mobile","");
         String password = localStore.getString("password","");
         String current_location = localStore.getString("current_location","");
-        rider_info ri = new rider_info(id,firstname,lastname,email,mobile,password,current_location);
+        String voucher = localStore.getString("voucher","");
+        String voucher_status = localStore.getString("voucher_status","");
+        String playerID = localStore.getString("playerID","");
+        float percent = localStore.getFloat("voucher_code_percent",0);
+        rider_info ri = new rider_info(id,firstname,lastname,email,mobile,password,current_location,voucher,voucher_status,playerID,percent);
         return ri;
     }
 

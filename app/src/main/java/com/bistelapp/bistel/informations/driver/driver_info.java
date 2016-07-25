@@ -6,9 +6,9 @@ package com.bistelapp.bistel.informations.driver;
 public class driver_info {
 
     public int id;
-    public String firstname, lastname,email, plate_number, mobile, password,image,status,current_location,distance;
+    public String firstname, lastname,email, plate_number, mobile, password,image,status,current_location,distance,playerID;
 
-    public driver_info(int id, String firstname, String lastname,String email, String plate_number, String mobile, String password, String image,String status,String current_location,String distance){
+    public driver_info(int id, String firstname, String lastname,String email, String plate_number, String mobile, String password, String image,String status,String current_location,String distance,String playerID){
         this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
@@ -20,5 +20,6 @@ public class driver_info {
         this.status = status;
         this.current_location = current_location;
         this.distance = distance;
+        this.playerID = playerID;
     }
 }

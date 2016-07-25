@@ -2,5 +2,5 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 <item android:id="@+id/action_refresh" android:orderInCategory="100"
     app:showAsAction="ifRoom" android:title="@string/refresh"
-    android:icon="@drawable/ic_play_dark"/>
+    android:icon="@drawable/ic_refresh_white_18px"/>
 </menu>

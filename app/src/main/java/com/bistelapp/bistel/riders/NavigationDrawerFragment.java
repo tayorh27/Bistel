@@ -5,31 +5,19 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
-import android.graphics.BitmapShader;
-import android.graphics.Canvas;
-import android.graphics.ColorFilter;
-import android.graphics.Paint;
-import android.graphics.PixelFormat;
-import android.graphics.Rect;
-import android.graphics.RectF;
-import android.graphics.Shader;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bistelapp.bistel.DonateActivity2;
-import com.bistelapp.bistel.MainActivity;
 import com.bistelapp.bistel.PaymentActivity;
 import com.bistelapp.bistel.R;
 import com.bistelapp.bistel.database.rider.UserLocalStorage;
@@ -143,6 +131,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
                 startActivity(new Intent(getActivity(),PaymentActivity.class));
                 break;
             case 2://trip history
+                startActivity(new Intent(getActivity(),HistoryActivity.class));
                 break;
             case 3://vouchers
                 startActivity(new Intent(getActivity(),VoucherActivity.class));
@@ -166,14 +155,14 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 
     public List<NavigationItem> getMenu() {
         List<NavigationItem> items = new ArrayList<NavigationItem>();
-        items.add(new NavigationItem("Profile", getResources().getDrawable(R.drawable.ic_menu_check)));
-        items.add(new NavigationItem("Payments", getResources().getDrawable(R.drawable.ic_menu_check)));
-        items.add(new NavigationItem("Trip History", getResources().getDrawable(R.drawable.ic_menu_check)));
-        items.add(new NavigationItem("Vouchers", getResources().getDrawable(R.drawable.ic_menu_check)));
-        items.add(new NavigationItem("Donate", getResources().getDrawable(R.drawable.ic_menu_check)));
-        items.add(new NavigationItem("About", getResources().getDrawable(R.drawable.ic_menu_check)));
-        items.add(new NavigationItem("Support", getResources().getDrawable(R.drawable.ic_menu_check)));
-        items.add(new NavigationItem("Logout", getResources().getDrawable(R.drawable.ic_menu_check)));
+        items.add(new NavigationItem("Profile", getResources().getDrawable(R.drawable.ic_person_black_18px)));
+        items.add(new NavigationItem("Payments", getResources().getDrawable(R.drawable.ic_payment_black_18px)));
+        items.add(new NavigationItem("Trip History", getResources().getDrawable(R.drawable.ic_history_black_18px)));
+        items.add(new NavigationItem("Vouchers", getResources().getDrawable(R.drawable.ic_account_balance_wallet_black_18px)));
+        items.add(new NavigationItem("Donate", getResources().getDrawable(R.drawable.ic_shopping_basket_black_18px)));
+        items.add(new NavigationItem("About", getResources().getDrawable(R.drawable.ic_info_black_18px)));
+        items.add(new NavigationItem("Support", getResources().getDrawable(R.drawable.ic_supervisor_account_black_18px)));
+        items.add(new NavigationItem("Logout", getResources().getDrawable(R.drawable.ic_power_settings_new_black_18px)));
         return items;
     }
 

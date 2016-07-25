@@ -5,5 +5,5 @@ package com.bistelapp.bistel.callbacks.rider;
  */
 public interface LoadDistanceDuration {
 
-    public void onLoadDistanceDuration(String distance, String duration);
+    public void onLoadDistanceDuration(String distance, String duration,int distance_value, int duration_value);
 }

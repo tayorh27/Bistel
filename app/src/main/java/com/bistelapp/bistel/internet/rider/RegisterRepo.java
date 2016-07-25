@@ -20,7 +20,6 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 /**
  * Created by tayo on 3/30/2016.
@@ -64,10 +63,12 @@ public class RegisterRepo {
                     }else if(success == 2){
                         Toast.makeText(context, "Registration failed. Email address already exist.", Toast.LENGTH_LONG).show();
                         general.dismissProgressDialog();
-                    }else if(success == 3){
-                        general.dismissProgressDialog();
-                        general.displayAlertDialog("Error","Registration failed.\n A device can't have more than one account");
-                    }else if(success == 0){
+                   }
+// else if(success == 3){
+//                        general.dismissProgressDialog();
+//                        general.displayAlertDialog("Error","Registration failed.\n A device can't have more than one account");
+//                    }
+                        else if(success == 0){
                         Toast.makeText(context, "Registration failed. try again.", Toast.LENGTH_LONG).show();
                         general.dismissProgressDialog();
                     }
@@ -95,7 +96,7 @@ public class RegisterRepo {
                 params.put("email",email);
                 params.put("mobile",mobile);
                 params.put("password",password);
-                params.put("voucher",first_name+new Random().nextInt(500));
+                params.put("voucher", "");
                 params.put("voucher_status","unused");
                 params.put("active","true");
                 params.put("email_activated","false");

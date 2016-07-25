@@ -91,7 +91,7 @@ public class PlaceArrayAdapter
             while (iterator.hasNext()) {
                 AutocompletePrediction prediction = iterator.next();
                 resultList.add(new PlaceAutocomplete(prediction.getPlaceId(),
-                        prediction.getDescription()));
+                        prediction.getFullText(null)));//getDescription()
             }
             // Buffer release
             autocompletePredictions.release();

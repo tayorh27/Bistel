@@ -29,10 +29,17 @@
     <string name="title_activity_donate_activity2">Donate</string>
     <string name="title_activity_payment">Payment</string>
     <string name="payment">Make</string>
+    <string name="pay">Select Payment Type</string>
     <string name="refresh">Refresh</string>
+    <string name="request_d">Request Details</string>
+    <string name="history_d">Ride History</string>
     <string-array name="ampm">
         <item>AM</item>
         <item>PM</item>
+    </string-array>
+    <string-array name="payment">
+        <item>Cash</item>
+        <item>Bank Transfer</item>
     </string-array>
 
 </resources>

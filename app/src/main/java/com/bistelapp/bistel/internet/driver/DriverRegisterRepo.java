@@ -46,7 +46,7 @@ public class DriverRegisterRepo {
         general = new General(context);
     }
 
-    public void Register(){
+    public void Register(final String player_id){
 
         general.displayProgressDialog("Registering rider...");
 
@@ -97,6 +97,7 @@ public class DriverRegisterRepo {
                 params.put("status","offline");
                 params.put("current_location","unilag");
                 params.put("activate_driver","false");
+                params.put("playerID",player_id);
                 return params;
             }
         };

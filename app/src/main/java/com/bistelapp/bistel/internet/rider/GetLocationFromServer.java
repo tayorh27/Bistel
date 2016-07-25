@@ -1,7 +1,6 @@
 package com.bistelapp.bistel.internet.rider;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -60,7 +59,7 @@ public class GetLocationFromServer {
                             loadAddressLocation.onLoadAddressLocation(location);
                         }
                     }else {
-                        Toast.makeText(context,status,Toast.LENGTH_LONG).show();
+                        //Toast.makeText(context,status,Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -69,7 +68,7 @@ public class GetLocationFromServer {
         },new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                General.handleVolleyError(error, context);
+                //General.handleVolleyError(error, context);
             }
         });
 

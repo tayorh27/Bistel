@@ -60,7 +60,7 @@ public class LoginRepo {
                     }else if (get_password.contentEquals(password)){
                         if(email_activated.contentEquals("false")){
                             general.dismissProgressDialog();
-                            general.displayAlertDialog("Login Error", "Your email has not been activated!");
+                            general.displayAlertDialog("Login Error", "Your email address has not been activated!");
                         }else {
                             int id = object.getInt("id");
                             String first = object.getString("first_name");
@@ -68,8 +68,11 @@ public class LoginRepo {
                             String email = object.getString("email");
                             String mobile = object.getString("mobile");
                             String current_location = object.getString("current_location");
+                            String voucher = object.getString("voucher");
+                            String voucher_status = object.getString("voucher_status");
+                            String playerID = object.getString("playerID");
 
-                            rider_info current = new rider_info(id, first, last, email, mobile, get_password, current_location);
+                            rider_info current = new rider_info(id, first, last, email, mobile, get_password, current_location,voucher,voucher_status,playerID,0);
                             userLocalStorage.storeUser(current);
                             userLocalStorage.setUserLogged(true);
                             general.dismissProgressDialog();

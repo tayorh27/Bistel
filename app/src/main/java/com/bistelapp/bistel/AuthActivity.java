@@ -1,11 +1,10 @@
 package com.bistelapp.bistel;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.bistelapp.bistel.drivers.DriverRegisterActivity;
 import com.bistelapp.bistel.riders.RegisterActivity;
@@ -27,7 +26,7 @@ public class AuthActivity extends ActionBarActivity implements View.OnClickListe
         Bundle bundle = getIntent().getExtras();
         if(bundle != null) {
             dr = bundle.getString("dr");
-            Toast.makeText(AuthActivity.this, "You're a " + dr, Toast.LENGTH_LONG).show();
+            //Toast.makeText(AuthActivity.this, "You're a " + dr, Toast.LENGTH_LONG).show();
         }
 
         signin.setOnClickListener(this);

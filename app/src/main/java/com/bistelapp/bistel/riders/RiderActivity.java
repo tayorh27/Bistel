@@ -1,12 +1,9 @@
 package com.bistelapp.bistel.riders;
 
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.NavUtils;
@@ -21,7 +18,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,14 +25,12 @@ import android.widget.Toast;
 import com.bistelapp.bistel.GPSService;
 import com.bistelapp.bistel.R;
 import com.bistelapp.bistel.adapter.rider.RiderAdapter;
-import com.bistelapp.bistel.async.rider.TaskLoadOnlineDrivers;
 import com.bistelapp.bistel.callbacks.rider.LoadAddressLocation;
 import com.bistelapp.bistel.callbacks.rider.LoadDistanceDuration;
 import com.bistelapp.bistel.callbacks.rider.LoadOnlineDrivers;
 import com.bistelapp.bistel.callbacks.rider.OnClickListener;
 import com.bistelapp.bistel.database.rider.UserLocalStorage;
 import com.bistelapp.bistel.informations.driver.driver_info;
-import com.bistelapp.bistel.informations.rider.online_driver;
 import com.bistelapp.bistel.informations.rider.rider_info;
 import com.bistelapp.bistel.internet.rider.FetchOnlineDrivers;
 import com.bistelapp.bistel.internet.rider.GetDistanceDuration;
@@ -45,7 +39,6 @@ import com.bistelapp.bistel.utility.General;
 import com.onesignal.OneSignal;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 
 public class RiderActivity extends ActionBarActivity implements NavigationDrawerCallbacks, OnClickListener, LoadOnlineDrivers, LoadDistanceDuration, LoadAddressLocation {
@@ -101,12 +94,12 @@ public class RiderActivity extends ActionBarActivity implements NavigationDrawer
             public void onClick(View v) {
                 rider_info ri = userLocalStorage.getRiderInfo();
                   runOnStart();
-               // startContactingOnlineDrivers();
+               //startContactingOnlineDrivers();
             }
         });
 
-        distanceDuration();
-        showPlayerID();
+        //distanceDuration();
+        //showPlayerID();
 
     }
 
@@ -270,12 +263,25 @@ public class RiderActivity extends ActionBarActivity implements NavigationDrawer
                 driver_info di = customData.get(position);
                 bundle.putString("name",di.lastname+" "+di.firstname);
                 bundle.putString("mobile",di.mobile);
+                bundle.putInt("driver_id",di.id);
+                bundle.putString("driver_player_id",di.playerID);
+                bundle.putString("driver_plate_number",di.plate_number);
                 Intent intent = new Intent(RiderActivity.this, BookingActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
                 //displayAlertDialog("Booking Details");
                 break;
             case R.id.request:
+                Bundle bundle1 = new Bundle();
+                driver_info di1 = customData.get(position);
+                bundle1.putString("name",di1.lastname+" "+di1.firstname);
+                bundle1.putString("mobile",di1.mobile);
+                bundle1.putInt("driver_id",di1.id);
+                bundle1.putString("driver_player_id",di1.playerID);
+                bundle1.putString("driver_plate_number",di1.plate_number);
+                Intent intent1 = new Intent(RiderActivity.this, RequestActivity.class);
+                intent1.putExtras(bundle1);
+                startActivity(intent1);
                 break;
         }
     }
@@ -296,11 +302,6 @@ public class RiderActivity extends ActionBarActivity implements NavigationDrawer
     }
 
     @Override
-    public void onLoadDistanceDuration(String distance, String duration) {
-        Toast.makeText(RiderActivity.this, "distance = "+distance+"\nduration = "+duration,Toast.LENGTH_LONG).show();
-    }
-
-    @Override
     public void onLoadAddressLocation(String location) {
         if(location.contentEquals("")){
             Toast.makeText(RiderActivity.this,"retrying to get location",Toast.LENGTH_LONG).show();
@@ -308,9 +309,14 @@ public class RiderActivity extends ActionBarActivity implements NavigationDrawer
         }else {
             Toast.makeText(RiderActivity.this, "Location is - " + location, Toast.LENGTH_LONG).show();
             rider_info ri = userLocalStorage.getRiderInfo();
-            rider_info current = new rider_info(ri.id, ri.firstname, ri.lastname, ri.email, ri.mobile, ri.password, location);
+            rider_info current = new rider_info(ri.id, ri.firstname, ri.lastname, ri.email, ri.mobile, ri.password, location,ri.voucher,ri.voucher_status,ri.playerID,ri.voucher_code_percent);
             userLocalStorage.storeUser(current);
             startContactingOnlineDrivers();
         }
+    }
+
+    @Override
+    public void onLoadDistanceDuration(String distance, String duration, int distance_value, int duration_value) {
+        Toast.makeText(RiderActivity.this, "distance = "+distance+"\nduration = "+duration,Toast.LENGTH_LONG).show();
     }
 }

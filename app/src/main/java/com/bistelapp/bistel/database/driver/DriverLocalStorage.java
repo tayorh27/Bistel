@@ -31,6 +31,7 @@ public class DriverLocalStorage {
         editor.putString("status",ri.status);
         editor.putString("current_location",ri.current_location);
         editor.putString("distance",ri.distance);
+        editor.putString("playerID",ri.playerID);
         editor.apply();
     }
 
@@ -46,7 +47,8 @@ public class DriverLocalStorage {
         String status = localStore.getString("status","");
         String current_location = localStore.getString("current_location","");
         String distance = localStore.getString("distance","");
-        driver_info ri = new driver_info(id,firstname,lastname,email,plate_number,mobile,password,image,status,current_location,distance);
+        String playerID = localStore.getString("playerID","");
+        driver_info ri = new driver_info(id,firstname,lastname,email,plate_number,mobile,password,image,status,current_location,distance,playerID);
         return ri;
     }
 

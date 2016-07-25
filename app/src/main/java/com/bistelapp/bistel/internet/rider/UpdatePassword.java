@@ -65,7 +65,7 @@ public class UpdatePassword {
                         if (success == 1) {
                             Toast.makeText(context, "update successful.", Toast.LENGTH_LONG).show();
 
-                            rider_info current = new rider_info(ri.id, ri.firstname, ri.lastname, ri.email, ri.mobile, newPassword, ri.current_location);
+                            rider_info current = new rider_info(ri.id, ri.firstname, ri.lastname, ri.email, ri.mobile, newPassword, ri.current_location,ri.voucher,ri.voucher_status,ri.playerID,ri.voucher_code_percent);
                             userLocalStorage.storeUser(current);
 
                             context.startActivity(new Intent(context, RiderActivity.class));

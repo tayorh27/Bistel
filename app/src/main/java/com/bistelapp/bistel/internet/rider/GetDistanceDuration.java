@@ -1,6 +1,7 @@
 package com.bistelapp.bistel.internet.rider;
 
 import android.content.Context;
+import android.net.Uri;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -16,6 +17,8 @@ import com.bistelapp.bistel.utility.General;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.net.URLEncoder;
 
 /**
  * Created by tayo on 4/19/2016.
@@ -51,9 +54,10 @@ public class GetDistanceDuration {
 
         general.displayProgressDialog("calculating distance and duration");
 
-        String url = AppConfig.GET_DISTANCE_AND_DURATION+origin+"&destinations="+destination+"&key="+AppConfig.API_KEY_FOR_DISTANCE_DURATION;
+        String _url = AppConfig.GET_DISTANCE_AND_DURATION + origin + "&destinations=" + destination + "&key=" + AppConfig.API_KEY_FOR_DISTANCE_DURATION;
+        String nUrl = _url.replace(" ","%20");
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET,url, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.GET,nUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
@@ -68,10 +72,12 @@ public class GetDistanceDuration {
                         JSONObject object4 = object2.getJSONObject("duration");
 
                         String g_distance = object3.getString("text");
+                        int g_distance_value = object3.getInt("value");
                         String g_duration = object4.getString("text");
+                        int g_duration_value = object4.getInt("value");
 
                         if(loadDistanceDuration != null){
-                            loadDistanceDuration.onLoadDistanceDuration(g_distance,g_duration);
+                            loadDistanceDuration.onLoadDistanceDuration(g_distance,g_duration,g_distance_value,g_duration_value);
                         }
 
                     }else {
@@ -89,7 +95,8 @@ public class GetDistanceDuration {
             @Override
             public void onErrorResponse(VolleyError error) {
                 general.dismissProgressDialog();
-                General.handleVolleyError(error, context);
+                //General.handleVolleyError(error, context);
+                general.displayAlertDialog("distance duration error",error.toString());
             }
         });
         requestQueue.add(stringRequest);
@@ -97,11 +104,12 @@ public class GetDistanceDuration {
 
     public String getDistance(String ori, String dest){
 
-        //general.displayProgressDialog("calculating distance and duration");
+        final String[] getDistance = new String[1];
 
         String url = AppConfig.GET_DISTANCE_AND_DURATION+ori+"&destinations="+dest+"&key="+AppConfig.API_KEY_FOR_DISTANCE_DURATION;
+        String nUrl = url.replace(" ","%20");
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET,url, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.GET,nUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
@@ -118,7 +126,7 @@ public class GetDistanceDuration {
                         String g_distance = object3.getString("text");
                         String g_duration = object4.getString("text");
 
-                        distance = g_distance;
+                        getDistance[0] = g_distance;
 
 
                     }else {
@@ -141,6 +149,6 @@ public class GetDistanceDuration {
         });
         requestQueue.add(stringRequest);
 
-        return distance;
+        return getDistance[0];
     }
 }
