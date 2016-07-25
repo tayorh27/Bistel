@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff"
+    android:orientation="vertical">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/pi">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Enter Pickup Location" />
+
+            <AutoCompleteTextView
+                android:id="@+id/autoCompleteTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:hint="Enter Place Here"
+                android:maxLines="1"
+                android:singleLine="true" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Enter Destination" />
+
+            <AutoCompleteTextView
+                android:id="@+id/autoCompleteTextView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:hint="Enter Place Here"
+                android:maxLines="1"
+                android:singleLine="true" />
+
+
+            <Button
+                android:id="@+id/book_now"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp"
+                android:background="#000"
+                android:text="Request Now"
+                android:textColor="#fff" />
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/myDrawerBackground"
+                android:visibility="gone">
+
+                <RelativeLayout
+                    android:id="@+id/pi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/myDrawerBackground">
+
+                    <TextView
+                        android:id="@+id/tv_total_amount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/myDrawerBackground"
+                        android:padding="20dp"
+                        android:text="Total Amount"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/tv_total_amount_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:background="@color/myDrawerBackground"
+                        android:padding="20dp"
+                        android:text="₦0.00K"
+                        android:textColor="@color/myPrimaryColor"
+                        android:textSize="20sp" />
+
+                    <View
+                        android:id="@+id/vi"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@+id/tv_total_amount"
+                        android:layout_margin="5dp"
+                        android:background="#ccc" />
+
+                    <TextView
+                        android:id="@+id/tv_amount_distance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/vi"
+                        android:background="@color/myDrawerBackground"
+                        android:padding="20dp"
+                        android:text="Amount per Distance"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/tv_amount_distance_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_below="@+id/vi"
+                        android:background="@color/myDrawerBackground"
+                        android:padding="20dp"
+                        android:text="₦80"
+                        android:textColor="@color/myPrimaryColor"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/tv_distance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_above="@+id/vi2"
+                        android:layout_alignParentRight="true"
+                        android:background="@color/myDrawerBackground"
+                        android:text="0 Km"
+                        android:textColor="@color/myPrimaryDarkColor"
+                        android:textSize="12sp" />
+
+                    <View
+                        android:id="@+id/vi2"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@+id/tv_amount_distance"
+                        android:layout_margin="5dp"
+                        android:background="#ccc" />
+
+                    <TextView
+                        android:id="@+id/tv_amount_duration"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/vi2"
+                        android:background="@color/myDrawerBackground"
+                        android:padding="20dp"
+                        android:text="Amount per Duration"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/tv_amount_duration_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_below="@+id/vi2"
+                        android:background="@color/myDrawerBackground"
+                        android:padding="20dp"
+                        android:text="₦20"
+                        android:textColor="@color/myPrimaryColor"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/tv_duration"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_above="@+id/vi3"
+                        android:layout_alignParentRight="true"
+                        android:background="@color/myDrawerBackground"
+                        android:text="0 min"
+                        android:textColor="@color/myPrimaryDarkColor"
+                        android:textSize="12sp" />
+
+                    <View
+                        android:id="@+id/vi3"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@+id/tv_amount_duration"
+                        android:layout_margin="5dp"
+                        android:background="#ccc" />
+
+                    <TextView
+                        android:id="@+id/notification"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/vi3"
+                        android:background="@color/myDrawerBackground"
+                        android:text="*Amount is negotiable with the driver"
+                        android:textColor="@color/myAccentColor"
+                        android:textSize="12sp" />
+
+                    <Button
+                        android:id="@+id/call_now"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#000"
+                        android:layout_marginTop="5dp"
+                        android:text="Call Driver"
+                        android:textColor="#fff"
+                        android:layout_below="@+id/notification"/>
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
