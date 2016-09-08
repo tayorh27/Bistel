@@ -60,6 +60,7 @@ public class RiderActivity extends ActionBarActivity implements NavigationDrawer
     private FetchOnlineDrivers fetchOnlineDrivers;
     private GetLocationFromServer getLocationFromServer;
     private GetDistanceDuration getDistanceDuration;
+    private String current_location;
 
 
     @Override
@@ -291,6 +292,7 @@ public class RiderActivity extends ActionBarActivity implements NavigationDrawer
         if(!list.isEmpty()){
             customData = list;
             adapter.setList(list);
+            adapter.setCurrent_location(current_location);
             refresh.setVisibility(View.GONE);
             check.setVisibility(View.GONE);
         }else {
@@ -311,6 +313,7 @@ public class RiderActivity extends ActionBarActivity implements NavigationDrawer
             rider_info ri = userLocalStorage.getRiderInfo();
             rider_info current = new rider_info(ri.id, ri.firstname, ri.lastname, ri.email, ri.mobile, ri.password, location,ri.voucher,ri.voucher_status,ri.playerID,ri.voucher_code_percent);
             userLocalStorage.storeUser(current);
+            current_location = location;
             startContactingOnlineDrivers();
         }
     }

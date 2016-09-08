@@ -14,6 +14,7 @@ import com.bistelapp.bistel.AppConfig;
 import com.bistelapp.bistel.R;
 import com.bistelapp.bistel.callbacks.rider.OnClickListener;
 import com.bistelapp.bistel.informations.driver.driver_info;
+import com.bistelapp.bistel.internet.rider.GetDistanceDuration;
 import com.bistelapp.bistel.network.VolleySingleton;
 import com.bistelapp.bistel.utility.General;
 
@@ -32,6 +33,8 @@ public class RiderAdapter extends RecyclerView.Adapter<RiderAdapter.RiderHolder>
     VolleySingleton volleySingleton;
     ImageLoader imageLoader;
     String imageUrl = AppConfig.DRIVER_WEB_URL + "drivers_images/";
+    GetDistanceDuration getDistanceDuration;
+    String current_location;
 
     public RiderAdapter(Context context, OnClickListener clickListener) {
         this.context = context;
@@ -40,11 +43,17 @@ public class RiderAdapter extends RecyclerView.Adapter<RiderAdapter.RiderHolder>
         general = new General(context);
         volleySingleton = VolleySingleton.getInstance();
         imageLoader = volleySingleton.getImageLoader();
+        getDistanceDuration = new GetDistanceDuration(context);
+
     }
 
     public void setList(ArrayList<driver_info> information) {
         this.info = information;
         notifyDataSetChanged();
+    }
+
+    public void setCurrent_location(String current_location) {
+        this.current_location = current_location;
     }
 
     @Override
@@ -61,7 +70,7 @@ public class RiderAdapter extends RecyclerView.Adapter<RiderAdapter.RiderHolder>
         riderHolder.fn.setText(current.firstname);
         riderHolder.car_plate.setText(current.plate_number);
         riderHolder.location.setText(current.current_location);
-        riderHolder.distance.setText(current.distance);
+        riderHolder.distance.setText(getDistanceDuration.getDistance(current_location, current.current_location));
         if(current.status.contentEquals("online")){
             riderHolder.status.setText("ONLINE");
             riderHolder.img_status.setImageResource(R.drawable.icon_online);

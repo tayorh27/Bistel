@@ -1,7 +1,6 @@
 package com.bistelapp.bistel.internet.rider;
 
 import android.content.Context;
-import android.net.Uri;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -17,8 +16,6 @@ import com.bistelapp.bistel.utility.General;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.net.URLEncoder;
 
 /**
  * Created by tayo on 4/19/2016.
@@ -126,7 +123,7 @@ public class GetDistanceDuration {
                         String g_distance = object3.getString("text");
                         String g_duration = object4.getString("text");
 
-                        getDistance[0] = g_distance;
+                        getDistance[0] = g_duration;
 
 
                     }else {
