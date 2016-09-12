@@ -1,5 +1,8 @@
 package com.bistelapp.bistel.riders;
 
+/**
+ * Created by Control & Inst. LAB on 10-Sep-16.
+ */
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -30,6 +33,7 @@ import com.bistelapp.bistel.callbacks.rider.LoadDistanceDuration;
 import com.bistelapp.bistel.callbacks.rider.LoadOnlineDrivers;
 import com.bistelapp.bistel.callbacks.rider.OnClickListener;
 import com.bistelapp.bistel.database.rider.UserLocalStorage;
+import com.bistelapp.bistel.drivers.MapsActivity;
 import com.bistelapp.bistel.informations.driver.driver_info;
 import com.bistelapp.bistel.informations.rider.rider_info;
 import com.bistelapp.bistel.internet.rider.FetchOnlineDrivers;
@@ -94,8 +98,8 @@ public class RiderActivity extends ActionBarActivity implements NavigationDrawer
             @Override
             public void onClick(View v) {
                 rider_info ri = userLocalStorage.getRiderInfo();
-                  runOnStart();
-               //startContactingOnlineDrivers();
+                runOnStart();
+                //startContactingOnlineDrivers();
             }
         });
 
@@ -129,6 +133,7 @@ public class RiderActivity extends ActionBarActivity implements NavigationDrawer
             double latitude = mGPSService.getLatitude();
             double longitude = mGPSService.getLongitude();
             Toast.makeText(this, "Latitude:" + latitude + " | Longitude: " + longitude, Toast.LENGTH_LONG).show();
+            userLocalStorage.setLatLng(latitude,longitude);
 
             //address = mGPSService.getLocationAddress();
             //address = mGPSService.getLocation_(latitude,longitude);
@@ -151,7 +156,7 @@ public class RiderActivity extends ActionBarActivity implements NavigationDrawer
     }
 
     private void startContactingOnlineDrivers() {
-       fetchOnlineDrivers.OnlineDrivers();
+        fetchOnlineDrivers.OnlineDrivers();
     }
 
     @Override
@@ -197,6 +202,9 @@ public class RiderActivity extends ActionBarActivity implements NavigationDrawer
         //noinspection SimplifiableIfStatement
         if(id == android.R.id.home){
             NavUtils.navigateUpFromSameTask(this);
+        }
+        if(id == R.id.action_map){
+            startActivity(new Intent(RiderActivity.this, MapsActivity.class));
         }
         if (id == R.id.action_refresh){
             runOnStart();
@@ -283,6 +291,15 @@ public class RiderActivity extends ActionBarActivity implements NavigationDrawer
                 Intent intent1 = new Intent(RiderActivity.this, RequestActivity.class);
                 intent1.putExtras(bundle1);
                 startActivity(intent1);
+                break;
+            case R.id.kilometer:
+                driver_info di2 = customData.get(position);
+                rider_info ri = userLocalStorage.getRiderInfo();
+                Intent intent2 = new Intent(RiderActivity.this, MapsActivity.class);
+                intent2.putExtra("driver_location", di2.current_location);
+                intent2.putExtra("rider_location", ri.current_location);
+                intent2.putExtra("driver_name",di2.lastname+" "+di2.firstname);
+                startActivity(intent2);
                 break;
         }
     }

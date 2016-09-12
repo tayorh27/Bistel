@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion '23.0.3'
+    buildToolsVersion '24.0.0'
 
 //    dexOptions{
 //        maxProcessCount 4
@@ -48,7 +48,7 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.0.0'
     compile 'uk.co.chrisjenx:calligraphy:2.1.0'
     compile 'com.android.support:support-v4:24.0.0'
-    compile 'com.google.android.gms:play-services:9.0.2'
+    compile 'com.google.android.gms:play-services:9.2.1'
     compile 'com.onesignal:OneSignal:2.3.0'
     compile 'com.google.android.gms:play-services-gcm:9.0.2'
     compile 'com.google.android.gms:play-services-analytics:9.0.2'

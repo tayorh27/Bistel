@@ -41,5 +41,7 @@
         <item>Cash</item>
         <item>Bank Transfer</item>
     </string-array>
+    <string name="title_activity_maps">Map</string>
+    <string name="map">Map View</string>
 
 </resources>

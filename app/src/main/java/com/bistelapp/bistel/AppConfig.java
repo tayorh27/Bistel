@@ -14,6 +14,7 @@ public class AppConfig {
 //FetchRiderHistory.php include driver email and rider email
     public static String GET_LOCATION_FROM_SERVER = "https://maps.googleapis.com/maps/api/geocode/json?latlng=";
     public static String GET_DISTANCE_AND_DURATION = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=";
+    public static String GET_DISTANCE_AND_DURATION_DIRECTION = "https://maps.googleapis.com/maps/api/directions/json?origin=";
 }
 
 

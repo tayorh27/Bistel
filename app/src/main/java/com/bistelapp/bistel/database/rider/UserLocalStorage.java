@@ -66,6 +66,21 @@ public class UserLocalStorage {
 
     }
 
+    public void setLatLng(double lat, double lng){
+        SharedPreferences.Editor editor = localStore.edit();
+        editor.putString("latitude",lat+"");
+        editor.putString("longitude",lng+"");
+        editor.apply();
+    }
+
+    public double getLatitude(){
+        return Double.parseDouble(localStore.getString("latitude","0.0"));
+    }
+
+    public double getLongitude(){
+        return Double.parseDouble(localStore.getString("longitude","0.0"));
+    }
+
     public void clearDatabase(){
         SharedPreferences.Editor editor = localStore.edit();
         editor.clear();

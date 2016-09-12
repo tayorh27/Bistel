@@ -2,8 +2,8 @@ package com.bistelapp.bistel.adapter.rider;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -70,7 +70,7 @@ public class RiderAdapter extends RecyclerView.Adapter<RiderAdapter.RiderHolder>
         riderHolder.fn.setText(current.firstname);
         riderHolder.car_plate.setText(current.plate_number);
         riderHolder.location.setText(current.current_location);
-        riderHolder.distance.setText(getDistanceDuration.getDistance(current_location, current.current_location));
+        riderHolder.distance.setText("View on Map");//getDistanceDuration.getDistance(current_location, current.current_location));
         if(current.status.contentEquals("online")){
             riderHolder.status.setText("ONLINE");
             riderHolder.img_status.setImageResource(R.drawable.icon_online);
@@ -116,6 +116,13 @@ public class RiderAdapter extends RecyclerView.Adapter<RiderAdapter.RiderHolder>
                     clickListener.OnClick(v, getPosition());
                 }
             });
+            distance.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    clickListener.OnClick(v, getPosition());
+                }
+            });
+
              //driver_info current = info.get(getPosition());
             //general.displayAlertDialog("Confirm", "Are you sure you want to request for this driver now?", current.mobile);
         }

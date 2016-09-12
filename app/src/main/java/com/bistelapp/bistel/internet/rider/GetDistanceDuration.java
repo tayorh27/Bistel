@@ -92,8 +92,8 @@ public class GetDistanceDuration {
             @Override
             public void onErrorResponse(VolleyError error) {
                 general.dismissProgressDialog();
-                //General.handleVolleyError(error, context);
-                general.displayAlertDialog("distance duration error",error.toString());
+                General.handleVolleyError(error, context);
+                //general.displayAlertDialog("distance duration error",error.toString());
             }
         });
         requestQueue.add(stringRequest);
