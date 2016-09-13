@@ -1,9 +1,14 @@
 package com.bistelapp.bistel.drivers;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
+import android.widget.TextView;
 
 import com.bistelapp.bistel.R;
 import com.bistelapp.bistel.callbacks.DirectionFinderListener;
@@ -30,7 +35,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     UserLocalStorage userLocalStorage;
     rider_info user;
-    String origin,dest,driver_name;
+    String origin, dest, driver_name;
     DirectionFinder directionFinder;
 
     private List<Marker> originMarkers = new ArrayList<>();
@@ -64,19 +69,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.getUiSettings().setZoomControlsEnabled(true);
 
 
         // Add a marker in Sydney and move the camera
         double lat = userLocalStorage.getLatitude();
         double lng = userLocalStorage.getLongitude();
         LatLng current_location = new LatLng(lat, lng);
-        mMap.addMarker(new MarkerOptions()
-                .position(current_location)
-                .title(user.firstname+" "+user.lastname)
-                .snippet("Your Current Location")
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(current_location,18));
-
+//        mMap.addMarker(new MarkerOptions()
+//                .position(current_location)
+//                .title(user.firstname+" "+user.lastname)
+//                .snippet("Your Current Location")
+//                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+//        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(current_location,18));
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        mMap.setMyLocationEnabled(true);
         sendRequest();
     }
 
@@ -99,23 +115,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void LoadDistanceDuration() {
-        if (originMarkers != null) {
-            for (Marker marker : originMarkers) {
-                marker.remove();
-            }
-        }
-
-        if (destinationMarkers != null) {
-            for (Marker marker : destinationMarkers) {
-                marker.remove();
-            }
-        }
-
-        if (polylinePaths != null) {
-            for (Polyline polyline:polylinePaths ) {
-                polyline.remove();
-            }
-        }
+//        if (originMarkers != null) {
+//            for (Marker marker : originMarkers) {
+//                marker.remove();
+//            }
+//        }
+//
+//        if (destinationMarkers != null) {
+//            for (Marker marker : destinationMarkers) {
+//                marker.remove();
+//            }
+//        }
+//
+//        if (polylinePaths != null) {
+//            for (Polyline polyline:polylinePaths ) {
+//                polyline.remove();
+//            }
+//        }
     }
 
     @Override
@@ -125,30 +141,33 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         destinationMarkers = new ArrayList<>();
 
         for (Route route : routes) {
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(route.startLocation, 18));
-            //((TextView) findViewById(R.id.tvDuration)).setText(route.duration.text);
-            //((TextView) findViewById(R.id.tvDistance)).setText(route.distance.text);
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(route.startLocation, 16));
+            ((TextView) findViewById(R.id.tvDuration)).setText("ETA: "+route.duration);
+            ((TextView) findViewById(R.id.tvDistance)).setText(route.distance);
 
             originMarkers.add(mMap.addMarker(new MarkerOptions()
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-                    .title(user.firstname+" "+user.lastname+"\n"+route.startAddress)
-                    .snippet("Your current Location")
+                    .title(user.firstname+" "+user.lastname)
+                    .snippet(route.startAddress)//"Your current Location"+"-"+
                     .position(route.startLocation)));
             destinationMarkers.add(mMap.addMarker(new MarkerOptions()
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
-                    .title(driver_name+"\n"+route.endAddress)
-                    .snippet("Driver Location")
+                    .title(driver_name)
+                    .snippet(route.endAddress)//"Driver Location"+"-"+
                     .position(route.endLocation)));
 
             PolylineOptions polylineOptions = new PolylineOptions().
                     geodesic(true).
-                    color(Color.BLUE).
-                    width(10);
+                    color(Color.RED).
+                    width(20);
 
-            for (int i = 0; i < route.points.size(); i++)
+            for (int i = 0; i < route.points.size(); i++) {
                 polylineOptions.add(route.points.get(i));
+                Log.e("adding polyline", route.points.get(i).toString());
+            }
 
             polylinePaths.add(mMap.addPolyline(polylineOptions));
         }
+
     }
 }

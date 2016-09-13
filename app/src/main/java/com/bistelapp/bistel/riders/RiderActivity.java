@@ -204,7 +204,13 @@ public class RiderActivity extends ActionBarActivity implements NavigationDrawer
             NavUtils.navigateUpFromSameTask(this);
         }
         if(id == R.id.action_map){
-            startActivity(new Intent(RiderActivity.this, MapsActivity.class));
+            //startActivity(new Intent(RiderActivity.this, MapsActivity.class));
+            if(customData.isEmpty()){
+                Toast.makeText(RiderActivity.this,"Load all drivers first",Toast.LENGTH_LONG).show();
+            }else {
+                //getFragmentManager().beginTransaction().replace(R.id.map_fragment, new MapViewFragment()).commit();
+                startActivity(new Intent(RiderActivity.this, RiderMapViewActivity.class));
+            }
         }
         if (id == R.id.action_refresh){
             runOnStart();

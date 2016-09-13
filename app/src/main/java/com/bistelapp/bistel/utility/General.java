@@ -253,13 +253,13 @@ public class General {
                 displayAlertDialog("Error", "please confirm passwords");
                 check_sign_in = false;
             }
-            else if (option1.contentEquals("")) {
+            else if (option1.isEmpty()) {
                 check_sign_in = false;
                 displayAlertDialog("Error", "please provide " + text1);
-            } else if (option2.contentEquals("")) {
+            } else if (option2.isEmpty()) {
                 check_sign_in = false;
                 displayAlertDialog("Error", "please provide " + text2);
-            } else if (option3.contentEquals("")) {
+            } else if (option3.isEmpty()) {
                 check_sign_in = false;
                 displayAlertDialog("Error", "please provide " + text3);
             } else {

@@ -1,9 +1,8 @@
 package com.bistelapp.bistel.riders;
 
 import android.content.Intent;
-import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -79,7 +78,7 @@ public class ProfileActivity extends ActionBarActivity implements View.OnClickLi
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.update:
-                if(general.rider_check_all(false,"first name","last name","mobile",etFirst,etLast,etMobile)){
+                if(general.rider_check_all(true,"first name","last name","mobile",etFirst,etLast,etMobile)){
                     String first = etFirst.getText().toString();
                     String last = etLast.getText().toString();
                     String mobile = etMobile.getText().toString();
