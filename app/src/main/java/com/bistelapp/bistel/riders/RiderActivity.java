@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.bistelapp.bistel.GPSService;
 import com.bistelapp.bistel.R;
+import com.bistelapp.bistel.TestingActivity;
 import com.bistelapp.bistel.adapter.rider.RiderAdapter;
 import com.bistelapp.bistel.callbacks.rider.LoadAddressLocation;
 import com.bistelapp.bistel.callbacks.rider.LoadDistanceDuration;
@@ -205,12 +206,12 @@ public class RiderActivity extends ActionBarActivity implements NavigationDrawer
         }
         if(id == R.id.action_map){
             //startActivity(new Intent(RiderActivity.this, MapsActivity.class));
-            if(customData.isEmpty()){
-                Toast.makeText(RiderActivity.this,"Load all drivers first",Toast.LENGTH_LONG).show();
-            }else {
+            //if(customData.isEmpty()){
+            //    Toast.makeText(RiderActivity.this,"Load all drivers first",Toast.LENGTH_LONG).show();
+            //}else {
                 //getFragmentManager().beginTransaction().replace(R.id.map_fragment, new MapViewFragment()).commit();
-                startActivity(new Intent(RiderActivity.this, RiderMapViewActivity.class));
-            }
+                startActivity(new Intent(RiderActivity.this, TestingActivity.class));//RiderMapViewActivity
+           // }
         }
         if (id == R.id.action_refresh){
             runOnStart();

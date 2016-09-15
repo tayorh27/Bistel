@@ -32,7 +32,7 @@ public class DirectionFinder {
     RequestQueue requestQueue;
     General general;
     DirectionFinderListener onLoadDistanceDuration;
-    LatitudeLongitude route;
+    LatitudeLongitude _route;
 
     public DirectionFinder(Context context, String origin, String destination, DirectionFinderListener onLoadDistanceDuration) {
         this.origin = origin;
@@ -71,7 +71,7 @@ public class DirectionFinder {
                         JSONObject jsonLeg = jsonLegs.getJSONObject(0);
                         JSONObject jsonStartLocation = jsonLeg.getJSONObject("start_location");
 
-                        route = new LatitudeLongitude(jsonStartLocation.getDouble("lat"), jsonStartLocation.getDouble("lng"));
+                        _route = new LatitudeLongitude(jsonStartLocation.getDouble("lat"), jsonStartLocation.getDouble("lng"));
 
                     }
 
@@ -91,7 +91,7 @@ public class DirectionFinder {
             }
         });
         requestQueue.add(stringRequest);
-        return route;
+        return _route;
 
     }
 

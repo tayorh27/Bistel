@@ -5,14 +5,16 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.bistelapp.bistel.R;
 import com.bistelapp.bistel.callbacks.rider.LoadOnlineDrivers;
-import com.bistelapp.bistel.database.rider.LatitudeLongitude;
 import com.bistelapp.bistel.informations.driver.driver_info;
 import com.bistelapp.bistel.internet.rider.FetchOnlineDrivers;
 import com.bistelapp.bistel.utility.DirectionFinder;
@@ -103,18 +105,37 @@ public class RiderMapViewActivity extends ActionBarActivity implements OnMapRead
 
     @Override
     public void onLoadOnlineDrivers(ArrayList<driver_info> list) {
-        for (int i = 0; i < list.size(); i++){
+        for (int i = 0; i < list.size(); i++) {
             String name = list.get(i).lastname + " " + list.get(i).firstname;
-            directionFinder = new DirectionFinder(RiderMapViewActivity.this,list.get(i).current_location,"lekki phase1");
-            LatitudeLongitude latitudeLongitude = directionFinder.getLatitudeLongitude();
-            LatLng newLatLng = new LatLng(latitudeLongitude.latitude,latitudeLongitude.longitude);
-            if(list.get(i).status.contentEquals("online")) {
-                mMap.addMarker(new MarkerOptions().position(newLatLng).title(name+" (online)").snippet(list.get(i).current_location).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
-            }else if(list.get(i).status.contentEquals("offline")){
-                mMap.addMarker(new MarkerOptions().position(newLatLng).title(name+" (offline)").snippet(list.get(i).current_location).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+            String latlng = list.get(i).current_location.substring(list.get(i).current_location.indexOf("|") + 1);
+            Log.e("LatLng Details" + i, latlng);
+            String[] nL = latlng.split(",");
+            //directionFinder = new DirectionFinder(RiderMapViewActivity.this,list.get(i).current_location,"lekki phase1");
+            //LatitudeLongitude latitudeLongitude = directionFinder.getLatitudeLongitude();
+            LatLng newLatLng = new LatLng(Double.parseDouble(nL[0]), Double.parseDouble(nL[1]));
+            if (list.get(i).status.contentEquals("online")) {
+                mMap.addMarker(new MarkerOptions().position(newLatLng).title(name + " (online)").snippet(list.get(i).current_location.substring(0, list.get(i).current_location.indexOf("|"))).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+            } else if (list.get(i).status.contentEquals("offline")) {
+                mMap.addMarker(new MarkerOptions().position(newLatLng).title(name + " (offline)").snippet(list.get(i).current_location.substring(0, list.get(i).current_location.indexOf("|"))).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
             }
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newLatLng, 18));
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.rider_map, menu);
+        return super.onCreateOptionsMenu(menu);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.home) {
+            NavUtils.navigateUpFromSameTask(this);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -123,9 +144,7 @@ public class RiderMapViewActivity extends ActionBarActivity implements OnMapRead
                 (mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED || mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED)) {
             mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
         } else {
-            Intent intent = new Intent(Intent.ACTION_MAIN);
-            intent.addCategory(Intent.CATEGORY_HOME);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            Intent intent = new Intent(RiderMapViewActivity.this, RiderActivity.class);
             startActivity(intent);
         }
     }

@@ -69,7 +69,7 @@ public class RiderAdapter extends RecyclerView.Adapter<RiderAdapter.RiderHolder>
 
         riderHolder.fn.setText(current.firstname);
         riderHolder.car_plate.setText(current.plate_number);
-        riderHolder.location.setText(current.current_location);
+        riderHolder.location.setText(current.current_location.substring(0, current.current_location.indexOf("|")));
         riderHolder.distance.setText("View on Map");//getDistanceDuration.getDistance(current_location, current.current_location));
         if(current.status.contentEquals("online")){
             riderHolder.status.setText("ONLINE");

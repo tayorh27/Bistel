@@ -20,6 +20,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Created by tayo on 4/12/2016.
@@ -62,7 +63,7 @@ public class FetchOnlineDrivers {
                 try {
                     JSONArray jsonArray = new JSONArray(response);
 
-                    for (int i = 0; i< jsonArray.length(); i++){
+                    for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject json = jsonArray.getJSONObject(i);
 
                         int id = json.getInt("id");
@@ -72,17 +73,17 @@ public class FetchOnlineDrivers {
                         String plate_number = json.getString("plate_number");
                         String mobile = json.getString("mobile");
                         String image = json.getString("image");
-                        String current_location = json.getString("current_location");
-                        String distance = getDistanceDuration.getDistance(current_location,ri.current_location);
+                        String current_location = json.getString("current_location") + "|" + new Random().nextDouble() + "," + new Random().nextDouble();
+                        String distance = getDistanceDuration.getDistance(current_location, ri.current_location);
                         String status = json.getString("status");
                         String playerID = json.getString("playerID");
 
 
-                        driver_info current = new driver_info(id,first_name,last_name,email,plate_number,mobile,"",image,status,current_location,distance,playerID);
+                        driver_info current = new driver_info(id, first_name, last_name, email, plate_number, mobile, "", image, status, current_location, distance, playerID);
                         customData.add(current);
                     }
 
-                    if(component != null){
+                    if (component != null) {
                         component.onLoadOnlineDrivers(customData);
                     }
 
