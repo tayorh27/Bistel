@@ -78,7 +78,7 @@ public class ProfileActivity extends ActionBarActivity implements View.OnClickLi
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.update:
-                if(general.rider_check_all(true,"first name","last name","mobile",etFirst,etLast,etMobile)){
+                if(general.rider_check_all("first name","last name","mobile",etFirst,etLast,etMobile)){
                     String first = etFirst.getText().toString();
                     String last = etLast.getText().toString();
                     String mobile = etMobile.getText().toString();

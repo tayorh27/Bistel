@@ -7,11 +7,9 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.bistelapp.bistel.R;
 import com.bistelapp.bistel.callbacks.rider.LoadOnlineDrivers;
@@ -25,7 +23,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.ArrayList;
 
@@ -34,37 +31,16 @@ public class RiderMapViewActivity extends ActionBarActivity implements OnMapRead
     private GoogleMap mMap;
     private FetchOnlineDrivers fetchOnlineDrivers;
     private DirectionFinder directionFinder;
-    private SlidingUpPanelLayout mLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rider_map_view);
-        setSupportActionBar((Toolbar) findViewById(R.id.main_toolbar));
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-        mLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
-        mLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
-            @Override
-            public void onPanelSlide(View panel, float slideOffset) {
-                Log.e("onPanelSlide", "onPanelSlide, offset " + slideOffset);
-            }
-
-            @Override
-            public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
-                Log.e("onPanelStateChanged", "onPanelStateChanged " + newState);
-            }
-        });
-        mLayout.setFadeOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-            }
-        });
 
         fetchOnlineDrivers = new FetchOnlineDrivers(RiderMapViewActivity.this, this);
         fetchOnlineDrivers.OnlineDrivers();
@@ -140,12 +116,7 @@ public class RiderMapViewActivity extends ActionBarActivity implements OnMapRead
 
     @Override
     public void onBackPressed() {
-        if (mLayout != null &&
-                (mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED || mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED)) {
-            mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-        } else {
-            Intent intent = new Intent(RiderMapViewActivity.this, RiderActivity.class);
-            startActivity(intent);
-        }
+        Intent intent = new Intent(RiderMapViewActivity.this, RiderActivity.class);
+        startActivity(intent);
     }
 }

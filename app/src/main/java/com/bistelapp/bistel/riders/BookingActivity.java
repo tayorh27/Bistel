@@ -550,8 +550,8 @@ public class BookingActivity extends ActionBarActivity implements View.OnClickLi
                 total = 0;
             }
 
-            total_amt.setText("₦" + (int) general.totalAmount(total));
-            getTotalPrice = "NGN" + (int) general.totalAmount(total);
+            total_amt.setText("₦" + general.totalAmount(total));
+            getTotalPrice = "NGN" + general.totalAmount(total);
             message += ri.firstname + " " + ri.lastname + " just booked a ride.\nClick to view details";
         }
     }

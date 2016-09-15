@@ -143,8 +143,7 @@
         </activity>
         <activity
             android:name=".riders.RiderMapViewActivity"
-            android:label="@string/title_activity_rider_map_view"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            android:label="@string/title_activity_rider_map_view">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.bistelapp.bistel.riders.RiderActivity" />

@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.provider.Settings;
 import android.support.design.widget.TextInputLayout;
+import android.util.Log;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -252,8 +253,7 @@ public class General {
             if (!option2.contentEquals(option3)) {
                 displayAlertDialog("Error", "please confirm passwords");
                 check_sign_in = false;
-            }
-            else if (option1.isEmpty()) {
+            } else if (option1.isEmpty()) {
                 check_sign_in = false;
                 displayAlertDialog("Error", "please provide " + text1);
             } else if (option2.isEmpty()) {
@@ -267,6 +267,27 @@ public class General {
             }
         }
 
+
+        return check_sign_in;
+    }
+
+    public boolean rider_check_all(String text1, String text2, String text3, EditText et1, EditText et2, EditText et3) {
+        String option1 = et1.getText().toString();
+        String option2 = et2.getText().toString();
+        String option3 = et3.getText().toString();
+
+        if (option1.isEmpty()) {
+            check_sign_in = false;
+            displayAlertDialog("Error", "please provide " + text1);
+        } else if (option2.isEmpty()) {
+            check_sign_in = false;
+            displayAlertDialog("Error", "please provide " + text2);
+        } else if (option3.isEmpty()) {
+            check_sign_in = false;
+            displayAlertDialog("Error", "please provide " + text3);
+        } else {
+            check_sign_in = true;
+        }
 
 
         return check_sign_in;
@@ -301,30 +322,30 @@ public class General {
         return matcher.matches();
     }
 
-    public String getDeviceID(){
-        String device="";
+    public String getDeviceID() {
+        String device = "";
         device = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
         return device;
     }
 
-    public String return_subString(String what){
+    public String return_subString(String what) {
         String returnSub = "";
-        returnSub = what.substring(0,what.indexOf(" "));
+        returnSub = what.substring(0, what.indexOf(" "));
         return returnSub;
     }
 
-    public void deletePreferenceData(SharedPreferences data){
+    public void deletePreferenceData(SharedPreferences data) {
         SharedPreferences.Editor editor = data.edit();
         editor.clear();
         editor.apply();
     }
 
-    public ArrayList<driver_info> sortList(ArrayList<driver_info> getData){
+    public ArrayList<driver_info> sortList(ArrayList<driver_info> getData) {
         final ArrayList<driver_info> customData = new ArrayList<>();
 
-        for (int i = 0; i < getData.size(); i++){
+        for (int i = 0; i < getData.size(); i++) {
 
-            for (int j = i; j< getData.size(); j++){
+            for (int j = i; j < getData.size(); j++) {
 
             }
         }
@@ -335,14 +356,18 @@ public class General {
     //1453 - 3 = 1450
     //1455
 
-    public double totalAmount(double figure){
-        double r_totalAmount = 0;
-        String gLD = String.valueOf(figure);
-        int getLastDigit = Integer.parseInt(gLD.substring(gLD.length()-1));
-        if (getLastDigit < 5){
-            r_totalAmount = figure - getLastDigit;
-        }else if(getLastDigit > 5){
-            r_totalAmount = figure + (10 - getLastDigit);
+    public int totalAmount(double figure) {
+        int r_totalAmount = 0;
+        int f = (int)figure;
+        String gLD = String.valueOf(f);
+        int getLastDigit = Integer.parseInt(gLD.substring(gLD.length() - 1));
+        Log.e("getLastDigit Bistel","getLastDigit = "+getLastDigit+" Length = "+gLD.length());
+        if (getLastDigit < 5) {
+            r_totalAmount = f - getLastDigit;
+            Log.e("r_totalAmountBistel < 5","r_totalAmount = "+r_totalAmount+"");
+        } else if (getLastDigit > 5) {
+            r_totalAmount = f + (10 - getLastDigit);
+            Log.e("r_totalAmountBistel > 5","getLastDigit = "+r_totalAmount+"");
         }
         return r_totalAmount;
     }
