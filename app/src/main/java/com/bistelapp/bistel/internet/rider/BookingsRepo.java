@@ -12,9 +12,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.bistelapp.bistel.AppConfig;
+import com.bistelapp.bistel.MyApplication;
 import com.bistelapp.bistel.async.rider.TaskSendPush;
 import com.bistelapp.bistel.async.rider.TaskUpdateVoucherStatus;
 import com.bistelapp.bistel.database.rider.UserLocalStorage;
+import com.bistelapp.bistel.informations.rider.Bookings;
 import com.bistelapp.bistel.informations.rider.rider_info;
 import com.bistelapp.bistel.network.VolleySingleton;
 import com.bistelapp.bistel.riders.RiderActivity;
@@ -23,6 +25,7 @@ import com.bistelapp.bistel.utility.General;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -99,6 +102,9 @@ public class BookingsRepo {
                         new TaskSendPush(context,driver_player_id,message).execute();
                         update_percent();
                         update_voucher_status();
+                        ArrayList<Bookings> data = new ArrayList<>();
+                        data.add(new Bookings("",driver_name,driver_number,"2080556c-8ac9-48bd-b087-b4689b5379c7",driver_plate_number,pickUp,destination,distance,duration,negotiated_price,payment_type,pickUp_time));
+                        MyApplication.getWritableDatabase().insertMyPost(data,false);
                         Toast.makeText(context, "Ride already Booked.\n" +
                                 "Thank you for choosing Bistel Ride.", Toast.LENGTH_LONG).show();
                         context.startActivity(new Intent(context, RiderActivity.class));

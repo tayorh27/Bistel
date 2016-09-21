@@ -104,10 +104,10 @@ public class General {
         String option1 = et1.getText().toString();
         String option2 = et2.getText().toString();
 
-        if (option1.contentEquals("") && t1 != null) {
+        if (option1.isEmpty() && t1 != null) {
             t1.setError("please provide " + text1);
             check_sign_in = false;
-        } else if (option2.contentEquals("") && t2 != null) {
+        } else if (option2.isEmpty() && t2 != null) {
             t2.setError("please provide " + text2);
             check_sign_in = false;
         } else {
@@ -123,10 +123,10 @@ public class General {
         String option1 = et1.getText().toString();
         String option2 = et2.getText().toString();
 
-        if (option1.contentEquals("") && t1 != null) {
+        if (option1.isEmpty() && t1 != null) {
             Toast.makeText(context, "please provide " + text1, Toast.LENGTH_LONG).show();
             check_sign_in = false;
-        } else if (option2.contentEquals("") && t2 != null) {
+        } else if (option2.isEmpty() && t2 != null) {
             Toast.makeText(context, "please provide " + text2, Toast.LENGTH_LONG).show();
             check_sign_in = false;
         } else {
@@ -143,13 +143,13 @@ public class General {
         String option2 = et2.getText().toString();
         String option3 = et3.getText().toString();
 
-        if (option1.contentEquals("") && t1 != null) {
+        if (option1.isEmpty() && t1 != null) {
             t1.setError("please provide " + text1);
             check_sign_in = false;
-        } else if (option2.contentEquals("") && t2 != null) {
+        } else if (option2.isEmpty() && t2 != null) {
             t2.setError("please provide " + text2);
             check_sign_in = false;
-        } else if (option3.contentEquals("") && t3 != null) {
+        } else if (option3.isEmpty() && t3 != null) {
             t3.setError("please provide " + text3);
             check_sign_in = false;
         } else {
@@ -170,19 +170,19 @@ public class General {
         String option5 = et5.getText().toString();
         boolean check = checkBox.isChecked();
 
-        if (option1.contentEquals("") && t1 != null) {
+        if (option1.isEmpty() && t1 != null) {
             t1.setError("please provide " + text1);
             check_sign_in = false;
-        } else if (option2.contentEquals("") && t2 != null) {
+        } else if (option2.isEmpty() && t2 != null) {
             t2.setError("please provide " + text2);
             check_sign_in = false;
-        } else if (option3.contentEquals("") && t3 != null) {
+        } else if (option3.isEmpty() && t3 != null) {
             t3.setError("please provide " + text3);
             check_sign_in = false;
-        } else if (option4.contentEquals("") && t4 != null) {
+        } else if (option4.isEmpty() && t4 != null) {
             t4.setError("please provide " + text4);
             check_sign_in = false;
-        } else if (option5.contentEquals("") && t5 != null) {
+        } else if (option5.isEmpty() && t5 != null) {
             t5.setError("please provide " + text5);
             check_sign_in = false;
         } else if (!check) {
@@ -210,22 +210,22 @@ public class General {
         String option6 = et6.getText().toString();
         boolean check = checkBox.isChecked();
 
-        if (option1.contentEquals("") && t1 != null) {
+        if (option1.isEmpty() && t1 != null) {
             t1.setError("please provide " + text1);
             check_sign_in = false;
-        } else if (option2.contentEquals("") && t2 != null) {
+        } else if (option2.isEmpty() && t2 != null) {
             t2.setError("please provide " + text2);
             check_sign_in = false;
-        } else if (option3.contentEquals("") && t3 != null) {
+        } else if (option3.isEmpty() && t3 != null) {
             t3.setError("please provide " + text3);
             check_sign_in = false;
-        } else if (option4.contentEquals("") && t4 != null) {
+        } else if (option4.isEmpty() && t4 != null) {
             t4.setError("please provide " + text4);
             check_sign_in = false;
-        } else if (option5.contentEquals("") && t5 != null) {
+        } else if (option5.isEmpty() && t5 != null) {
             t5.setError("please provide " + text5);
             check_sign_in = false;
-        } else if (option6.contentEquals("") && t6 != null) {
+        } else if (option6.isEmpty() && t6 != null) {
             t6.setError("please provide " + text6);
             check_sign_in = false;
         } else if (!check) {

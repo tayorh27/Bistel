@@ -32,7 +32,8 @@
                 android:layout_marginTop="5dp"
                 android:hint="Enter Place Here"
                 android:maxLines="1"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:editable="false"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -51,22 +52,13 @@
                 android:singleLine="true" />
 
 
-            <Button
-                android:id="@+id/book_now"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:layout_marginTop="20dp"
-                android:background="#000"
-                android:text="Request Now"
-                android:textColor="#fff" />
-
             <android.support.v7.widget.CardView
                 android:id="@+id/card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/myDrawerBackground"
-                android:visibility="gone">
+                android:visibility="visible">
+
 
                 <RelativeLayout
                     android:id="@+id/pi"
@@ -74,10 +66,58 @@
                     android:layout_height="wrap_content"
                     android:background="@color/myDrawerBackground">
 
+                    <LinearLayout
+                        android:id="@+id/part0"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="Select Payment Type" />
+
+                        <Spinner
+                            android:id="@+id/payment_type"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:entries="@array/payment"
+                            android:prompt="@string/pay"
+                            android:spinnerMode="dialog" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="Enter Negotiated Amount" />
+
+                        <EditText
+                            android:id="@+id/negotiated"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:inputType="number"
+                            android:hint="Leave blank if no negotiation" />
+                    </LinearLayout>
+
+                    <Button
+                        style="@style/Widget.AppCompat.Button.Colored"
+                        android:id="@+id/book_now"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/part0"
+                        android:layout_marginTop="10dp"
+                        android:background="#000"
+                        android:text="Request Now"
+                        android:textColor="#fff" />
+
                     <TextView
                         android:id="@+id/tv_total_amount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_below="@+id/book_now"
                         android:background="@color/myDrawerBackground"
                         android:padding="20dp"
                         android:text="Total Amount"
@@ -88,6 +128,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
+                        android:layout_below="@+id/book_now"
                         android:background="@color/myDrawerBackground"
                         android:padding="20dp"
                         android:text="₦0.00K"
@@ -195,14 +236,15 @@
                         android:textSize="12sp" />
 
                     <Button
+                        style="@style/Widget.AppCompat.Button.Colored"
                         android:id="@+id/call_now"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="#000"
+                        android:layout_below="@+id/notification"
                         android:layout_marginTop="5dp"
+                        android:background="#000"
                         android:text="Call Driver"
-                        android:textColor="#fff"
-                        android:layout_below="@+id/notification"/>
+                        android:textColor="#fff" />
 
                 </RelativeLayout>
 

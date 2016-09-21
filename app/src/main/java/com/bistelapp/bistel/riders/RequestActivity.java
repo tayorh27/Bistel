@@ -1,6 +1,8 @@
 package com.bistelapp.bistel.riders;
 
 import android.Manifest;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -10,19 +12,25 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresPermission;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.CardView;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bistelapp.bistel.R;
 import com.bistelapp.bistel.adapter.rider.PlaceArrayAdapter;
-import com.bistelapp.bistel.async.rider.TaskUpdateVoucherStatus;
 import com.bistelapp.bistel.callbacks.rider.LoadDistanceDuration;
 import com.bistelapp.bistel.database.rider.UserLocalStorage;
 import com.bistelapp.bistel.informations.rider.rider_info;
@@ -39,23 +47,17 @@ import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class RequestActivity extends ActionBarActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks, LoadDistanceDuration {
 
-    private int year, month, day;
-    private Calendar calendar;
-    private String setDate = "";
-
-    private int hour, min;
-    private String setTime = "";
-
-    Button date, time, book_now, call_now;
+    Button request_now, call_now;
 
     CardView cardView;
     TextView total_amt, tv_dis, tv_dur;
     General general;
-    String mobile, name;
+    String mobile, name, playerID, plateNumber;
     int driver_id;
     UserLocalStorage userLocalStorage;
     SharedPreferences save_details;
@@ -73,19 +75,27 @@ public class RequestActivity extends ActionBarActivity implements View.OnClickLi
 
     private BookingsRepo bookingsRepo;
     private String getDistance, getDuration, getTotalPrice;
+    Spinner payment;
+    EditText negotiation;
+    private String vouchers = "";
+    private String message = "";
+    String getLocation;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request);
 
-        save_details = getSharedPreferences("saveRequestDetails", 0);
+        save_details = getSharedPreferences("saveBookingDetails", 0);
 
         mGoogleApiClient = new GoogleApiClient.Builder(RequestActivity.this)
                 .addApi(Places.GEO_DATA_API)
                 .enableAutoManage(this, GOOGLE_API_CLIENT_ID, this)
                 .addConnectionCallbacks(this)
                 .build();
+        payment = (Spinner) findViewById(R.id.payment_type);
+        negotiation = (EditText) findViewById(R.id.negotiated);
         mAutocompleteTextView = (AutoCompleteTextView) findViewById(R.id
                 .autoCompleteTextView);
         mAutocompleteTextView.setThreshold(3);
@@ -94,50 +104,41 @@ public class RequestActivity extends ActionBarActivity implements View.OnClickLi
                 .autoCompleteTextView2);
         mAutocompleteTextView2.setThreshold(3);
 
-        calendar = Calendar.getInstance();
         general = new General(RequestActivity.this);
         userLocalStorage = new UserLocalStorage(RequestActivity.this);
 
-        year = calendar.get(Calendar.YEAR);
-        month = calendar.get(Calendar.MONTH);
-        day = calendar.get(Calendar.DAY_OF_MONTH);
-        //setDate = showDate(year, month + 1, day,false);
-
-        hour = calendar.get(Calendar.HOUR_OF_DAY);
-        min = calendar.get(Calendar.MINUTE);
-
-        date = (Button) findViewById(R.id.date);
-        time = (Button) findViewById(R.id.time);
-        book_now = (Button) findViewById(R.id.book_now);
+        request_now = (Button) findViewById(R.id.book_now);
         call_now = (Button) findViewById(R.id.call_now);
         cardView = (CardView) findViewById(R.id.card);
         total_amt = (TextView) findViewById(R.id.tv_total_amount_price);
         tv_dis = (TextView) findViewById(R.id.tv_distance);
         tv_dur = (TextView) findViewById(R.id.tv_duration);
-        //ampm = (Button) findViewById(R.id.ampm);
-
-
-        date.setOnClickListener(this);
-        time.setOnClickListener(this);
-        book_now.setOnClickListener(this);
+        request_now.setOnClickListener(this);
         call_now.setOnClickListener(this);
-        //ampm.setOnClickListener(this);
 
         Bundle bundle = getIntent().getExtras();
         name = bundle.getString("name");
         mobile = bundle.getString("mobile");
         driver_id = bundle.getInt("driver_id");
+        playerID = bundle.getString("driver_player_id");
+        plateNumber = bundle.getString("driver_plate_number");
 
         getSupportActionBar().setSubtitle(name);
 
         rider_info ri = userLocalStorage.getRiderInfo();
         mAutocompleteTextView.setText(ri.current_location);
 
-        mAutocompleteTextView.setOnItemClickListener(mAutoCompleteClickListener);
+        //mAutocompleteTextView.setOnItemClickListener(mAutoCompleteClickListener);
+        mAutocompleteTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                popupCustomDialog();
+            }
+        });
         mAutocompleteTextView2.setOnItemClickListener(mAutoCompleteClickListener);
         mPlaceArrayAdapter = new PlaceArrayAdapter(this, android.R.layout.simple_list_item_1,
                 BOUNDS_MOUNTAIN_VIEW, null);
-        mAutocompleteTextView.setAdapter(mPlaceArrayAdapter);
+        // mAutocompleteTextView.setAdapter(mPlaceArrayAdapter);
         mAutocompleteTextView2.setAdapter(mPlaceArrayAdapter);
 
     }
@@ -145,7 +146,6 @@ public class RequestActivity extends ActionBarActivity implements View.OnClickLi
     private AdapterView.OnItemClickListener mAutoCompleteClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            // if (id == R.id.autoCompleteTextView2) {
             distanceDuration();
             final PlaceArrayAdapter.PlaceAutocomplete item = mPlaceArrayAdapter.getItem(position);
             final String placeId = String.valueOf(item.placeId);
@@ -154,7 +154,6 @@ public class RequestActivity extends ActionBarActivity implements View.OnClickLi
                     .getPlaceById(mGoogleApiClient, placeId);
             placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
             Log.i(LOG_TAG, "Fetching details for ID: " + item.placeId);
-            //}
         }
     };
 
@@ -166,9 +165,6 @@ public class RequestActivity extends ActionBarActivity implements View.OnClickLi
                         places.getStatus().toString());
                 return;
             }
-            String pickUp = mAutocompleteTextView.getText().toString();
-            String dest = mAutocompleteTextView2.getText().toString();
-            //distanceDuration();
             // Selecting the first object buffer.
             final Place place = places.get(0);
             CharSequence attributions = places.getAttributions();
@@ -182,11 +178,32 @@ public class RequestActivity extends ActionBarActivity implements View.OnClickLi
         getDistanceDuration.getDistanceDuration();
     }
 
+    public void popupCustomDialog(){
+        final Dialog dialog = new Dialog(RequestActivity.this);
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+        LayoutInflater inflater1 = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View custom_view = inflater1.inflate(R.layout.custom_pickup_location, (ViewGroup) findViewById(R.id.custom_pickup), false);
+        final AutoCompleteTextView pick = (AutoCompleteTextView) custom_view.findViewById(R.id.autoCompleteTextView1);
+        pick.setThreshold(3);
+        pick.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                getLocation = pick.getText().toString();
+                mAutocompleteTextView.setText(getLocation);
+                dialog.dismiss();
+            }
+        });
+        pick.setAdapter(mPlaceArrayAdapter);
+        dialog.setContentView(custom_view);
+        dialog.show();
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.book_now:
-                book_ride_now();
+                request_ride_now();
                 break;
             case R.id.call_now:
                 if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
@@ -202,6 +219,21 @@ public class RequestActivity extends ActionBarActivity implements View.OnClickLi
                 call_driver();
                 break;
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_request,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.home) {
+            NavUtils.navigateUpFromSameTask(this);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @RequiresPermission(Manifest.permission.CALL_PHONE)
@@ -221,20 +253,7 @@ public class RequestActivity extends ActionBarActivity implements View.OnClickLi
         startActivity(intent);
     }
 
-    private void update_voucher_status() {
-        rider_info ri = userLocalStorage.getRiderInfo();
-        rider_info update = new rider_info(ri.id, ri.firstname, ri.lastname, ri.email, ri.mobile, ri.password, ri.current_location, "", "used", ri.playerID, ri.voucher_code_percent);
-        userLocalStorage.storeUser(update);
-        new TaskUpdateVoucherStatus(RequestActivity.this).execute();
-    }
-
-    private void update_percent() {
-        rider_info ri = userLocalStorage.getRiderInfo();
-        rider_info update = new rider_info(ri.id, ri.firstname, ri.lastname, ri.email, ri.mobile, ri.password, ri.current_location, "", "used", ri.playerID, 0);
-        userLocalStorage.storeUser(update);
-    }
-
-    private void book_ride_now() {
+    private void request_ride_now() {
         rider_info ri = userLocalStorage.getRiderInfo();
         String driver_name = name;
         String driver_number = mobile;
@@ -243,17 +262,35 @@ public class RequestActivity extends ActionBarActivity implements View.OnClickLi
         int rider_id = ri.id;
         String pickUp = mAutocompleteTextView.getText().toString();
         String dest = mAutocompleteTextView2.getText().toString();
-        String ride_type = "booking";
+        String negotiate = "NGN" + negotiation.getText().toString();
+        int normal_accepted = 0;
+        if (negotiation.getText().length() == 0) {
+            negotiate = getTotalPrice;
+        }
+        String payment_type = payment.getSelectedItem().toString();
+        String ride_type = "request";
+
+        if (negotiation.getText().length() > 0) {
+            int get_negotiated = Integer.parseInt(negotiation.getText().toString());
+            int get_total = Integer.parseInt(getTotalPrice.substring(3));
+            normal_accepted = get_total - get_negotiated;
+        }
 
         if (pickUp.contentEquals("") || dest.contentEquals("")) {
             Toast.makeText(RequestActivity.this, "All fields must be filled", Toast.LENGTH_LONG).show();
         } else {
-            // push to online
-            update_percent();
-            update_voucher_status();
-            String booking_date_time = setDate + " " + setTime + "";
-            bookingsRepo = new BookingsRepo(RequestActivity.this, driver_name, driver_number, driver_id, "",rider_name, rider_number, rider_id, pickUp, dest, getDistance, getDuration, booking_date_time, getTotalPrice, "", ride_type);
-            //bookingsRepo.UploadRide("",ride_type);
+             if (normal_accepted > 1000) {
+                general.displayAlertDialog("Request Details", "Sorry negotiated price cannot be slashed more than ₦1000.");
+            } else {
+                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss am");
+                String request_date_time = sdf.format(Calendar.getInstance().getTime());
+                if (vouchers.isEmpty()) {
+                    vouchers = "none";
+                }
+                bookingsRepo = new BookingsRepo(RequestActivity.this, driver_name, driver_number, driver_id, plateNumber, rider_name, rider_number, rider_id, pickUp, dest, getDistance, getDuration, request_date_time, getTotalPrice, negotiate, ride_type);
+                bookingsRepo.UploadRide(payment_type, ride_type, save_details, vouchers, "2080556c-8ac9-48bd-b087-b4689b5379c7", message);
+                //testing playerID
+            }
         }
     }
 
@@ -265,12 +302,15 @@ public class RequestActivity extends ActionBarActivity implements View.OnClickLi
         String dist = tv_dis.getText().toString();
         String dur = tv_dur.getText().toString();
 
+        String n = negotiation.getText().toString();
+
         SharedPreferences.Editor editor = save_details.edit();
         editor.putString("pickup", pickUp);
         editor.putString("destination", dest);
         editor.putString("amount", _amt);
         editor.putString("distance", dist);
         editor.putString("duration", dur);
+        editor.putString("n", n);
         editor.putBoolean("card", true);
         editor.apply();
     }
@@ -282,6 +322,7 @@ public class RequestActivity extends ActionBarActivity implements View.OnClickLi
         String _amt = save_details.getString("amount", "");
         String dist = save_details.getString("distance", "");
         String dur = save_details.getString("duration", "");
+        String n = save_details.getString("n", "");
         boolean check_card_visibility = save_details.getBoolean("card", false);
 
         if (check_card_visibility) {
@@ -294,6 +335,7 @@ public class RequestActivity extends ActionBarActivity implements View.OnClickLi
             total_amt.setText(_amt);
             tv_dis.setText(dist);
             tv_dur.setText(dur);
+            negotiation.setText(n);
         }
     }
 
@@ -350,7 +392,7 @@ public class RequestActivity extends ActionBarActivity implements View.OnClickLi
             cardView.setVisibility(View.VISIBLE);
             tv_dis.setText(distance);
             tv_dur.setText(duration);
-            double g_distance = Double.parseDouble(general.return_subString(distance));
+            double g_distance = Double.parseDouble(general.return_subString(distance.replace(",", "")));
             double g_duration = Double.parseDouble(general.return_subString(duration));
 
             getDistance = distance;
@@ -364,20 +406,27 @@ public class RequestActivity extends ActionBarActivity implements View.OnClickLi
             if (ri.voucher_status.contentEquals("unused")) {
                 Toast.makeText(RequestActivity.this, "You got 10% off as a new user", Toast.LENGTH_LONG).show();
                 total = total - ((10 / 100) * total);
+                vouchers += "You got 10% off as a new user_";
             }
-
             if (ri.voucher_code_percent > 0) {
-                if(ri.voucher_code_percent <= 100) {
+                if (ri.voucher_code_percent <= 100) {
                     Toast.makeText(RequestActivity.this, "You got " + (int) ri.voucher_code_percent + "% off", Toast.LENGTH_LONG).show();
+                    vouchers += "You got " + (int) ri.voucher_code_percent + "% off";
                     total = total - ((ri.voucher_code_percent / 100) * total);
-                }else if(ri.voucher_code_percent > 100){
+                } else if (ri.voucher_code_percent > 100) {
                     Toast.makeText(RequestActivity.this, "You got ₦" + (int) ri.voucher_code_percent + " off", Toast.LENGTH_LONG).show();
+                    vouchers += "You got ₦" + (int) ri.voucher_code_percent + " off";
                     total = total - ri.voucher_code_percent;
                 }
             }
 
-            total_amt.setText("₦" + (int) Math.nextUp(total));
-            getTotalPrice = "NGN" + (int) Math.nextUp(total);
+            if (total < 0) {
+                total = 0;
+            }
+
+            total_amt.setText("₦" + general.totalAmount(total));
+            getTotalPrice = "NGN" + general.totalAmount(total);
+            message += ri.firstname + " " + ri.lastname + " just requested for a ride.\nClick to view details";
         }
     }
 }

@@ -56,6 +56,7 @@ public class BookingActivity extends ActionBarActivity implements View.OnClickLi
         GoogleApiClient.ConnectionCallbacks, LoadDistanceDuration {
 
     private int year, month, day;
+    private int _year, _month, _day;
     private Calendar calendar;
     private String setDate = "";
 
@@ -89,6 +90,7 @@ public class BookingActivity extends ActionBarActivity implements View.OnClickLi
     EditText negotiation;
     private String vouchers = "";
     private String message = "";
+    String getLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,11 +155,17 @@ public class BookingActivity extends ActionBarActivity implements View.OnClickLi
         rider_info ri = userLocalStorage.getRiderInfo();
         mAutocompleteTextView.setText(ri.current_location);
 
-        mAutocompleteTextView.setOnItemClickListener(mAutoCompleteClickListener);
+        //mAutocompleteTextView.setOnItemClickListener(mAutoCompleteClickListener);
+        mAutocompleteTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                popupCustomDialog();
+            }
+        });
         mAutocompleteTextView2.setOnItemClickListener(mAutoCompleteClickListener);
         mPlaceArrayAdapter = new PlaceArrayAdapter(this, android.R.layout.simple_list_item_1,
                 BOUNDS_MOUNTAIN_VIEW, null);
-        mAutocompleteTextView.setAdapter(mPlaceArrayAdapter);
+       // mAutocompleteTextView.setAdapter(mPlaceArrayAdapter);
         mAutocompleteTextView2.setAdapter(mPlaceArrayAdapter);
 
 
@@ -220,6 +228,9 @@ public class BookingActivity extends ActionBarActivity implements View.OnClickLi
         if (show_) {
             date.setText(_setDate);
         }
+        _year = year;
+        _month = month;
+        _day = day;
         setDate = _setDate;
 
         return setDate;
@@ -247,7 +258,12 @@ public class BookingActivity extends ActionBarActivity implements View.OnClickLi
     private DatePickerDialog.OnDateSetListener mDate = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            showDate(year, monthOfYear, dayOfMonth, true);
+            Calendar c = Calendar.getInstance();
+            if(year < c.get(Calendar.YEAR) || monthOfYear <  c.get(Calendar.MONTH) || dayOfMonth < c.get(Calendar.DAY_OF_MONTH)){
+                general.displayAlertDialog("Date Error", "Please select a future date");
+            }else {
+                showDate(year, monthOfYear, dayOfMonth, true);
+            }
         }
     };
 
@@ -255,9 +271,45 @@ public class BookingActivity extends ActionBarActivity implements View.OnClickLi
 
         @Override
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            showTime(hourOfDay, minute, true);
+            Calendar c = Calendar.getInstance();
+            if(!setDate.isEmpty()) {
+                if(_year == c.get(Calendar.YEAR) && _month ==  c.get(Calendar.MONTH) && _day == c.get(Calendar.DAY_OF_MONTH)){
+                    if(hourOfDay <= c.get(Calendar.HOUR_OF_DAY) || minute <=  c.get(Calendar.MINUTE)){
+                        general.displayAlertDialog("Date Error", "Please select a future time");
+                    }else {
+                        showTime(hourOfDay, minute, true);
+                    }
+                }else {
+                    showTime(hourOfDay, minute, true);
+                }
+            }else {
+                general.displayAlertDialog("DateTime Error", "Please select date first");
+            }
         }
     };
+
+    public void popupCustomDialog(){
+        final Dialog dialog = new Dialog(BookingActivity.this);
+        dialog.setCancelable(true);
+        dialog.setCanceledOnTouchOutside(false);
+        LayoutInflater inflater1 = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View custom_view = inflater1.inflate(R.layout.custom_pickup_location, (ViewGroup) findViewById(R.id.custom_pickup), false);
+        final AutoCompleteTextView pick = (AutoCompleteTextView) custom_view.findViewById(R.id.autoCompleteTextView1);
+        //final Button cn = (Button)custom_view.findViewById(R.id.btn_cancel);
+        //final Button pk = (Button)custom_view.findViewById(R.id.btn_pickup);
+        pick.setThreshold(3);
+        pick.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                getLocation = pick.getText().toString();
+                mAutocompleteTextView.setText(getLocation);
+                dialog.dismiss();
+            }
+        });
+        pick.setAdapter(mPlaceArrayAdapter);
+        dialog.setContentView(custom_view);
+        dialog.show();
+    }
 
     @Override
     protected Dialog onCreateDialog(int id) {
@@ -265,7 +317,7 @@ public class BookingActivity extends ActionBarActivity implements View.OnClickLi
             return new DatePickerDialog(this, mDate, year, month, day);
         }
         if (id == 888) {
-            return new TimePickerDialog(this, mTime, hour, min, false);
+            return new TimePickerDialog(this, mTime, hour, min, true);
         }
         return null;
     }
@@ -388,15 +440,17 @@ public class BookingActivity extends ActionBarActivity implements View.OnClickLi
 //                update_percent();
 //                update_voucher_status();
                 String booking_date_time = setDate + " " + setTime + "";
-                if (vouchers.contentEquals("")) {
+                if (vouchers.isEmpty()) {
                     vouchers = "none";
                 }
                 bookingsRepo = new BookingsRepo(BookingActivity.this, driver_name, driver_number, driver_id, plateNumber, rider_name, rider_number, rider_id, pickUp, dest, getDistance, getDuration, booking_date_time, getTotalPrice, negotiate, ride_type);
                 bookingsRepo.UploadRide(payment_type, ride_type, save_details, vouchers, "2080556c-8ac9-48bd-b087-b4689b5379c7", message);
                 //testing playerID
+
             }
         }
     }
+
 
     private void SaveBookingDetails() {
         String pickUp = mAutocompleteTextView.getText().toString();

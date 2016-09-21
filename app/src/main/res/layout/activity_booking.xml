@@ -32,7 +32,8 @@
                 android:layout_marginTop="5dp"
                 android:hint="Enter Place Here"
                 android:maxLines="1"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:editable="false"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -148,7 +149,7 @@
                         android:layout_below="@+id/part1"
                         android:layout_marginTop="10dp"
                         android:background="#000"
-                        android:text="Book Now"
+                        android:text="Book Later"
                         android:textColor="#fff" />
 
                     <TextView

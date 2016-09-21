@@ -4,7 +4,8 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 
-import com.bistelapp.bistel.riders.BookingActivity;
+import com.bistelapp.bistel.database.rider.BookingsDatabase;
+import com.bistelapp.bistel.drivers.DriverHomeActivity;
 import com.onesignal.OneSignal;
 
 import org.json.JSONObject;
@@ -17,6 +18,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 public class MyApplication extends Application{
 
     private static MyApplication sInstance;
+    private static BookingsDatabase database;
 
 
     @Override
@@ -25,10 +27,11 @@ public class MyApplication extends Application{
         OneSignal.startInit(this).setNotificationOpenedHandler(new OneSignal.NotificationOpenedHandler() {
             @Override
             public void notificationOpened(String s, JSONObject jsonObject, boolean b) {
-                startActivity(new Intent(getAppContext(), BookingActivity.class));
+                startActivity(new Intent(getAppContext(), DriverHomeActivity.class));
             }
         }).init();
         sInstance = this;
+        database = new BookingsDatabase(this);
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
                 .setDefaultFontPath("avenir_light.ttf")
                 .setFontAttrId(R.attr.fontPath)
@@ -41,5 +44,13 @@ public class MyApplication extends Application{
 
     public static Context getAppContext(){
         return sInstance.getApplicationContext();
+    }
+
+    public synchronized static BookingsDatabase getWritableDatabase(){
+        if (database == null){
+            database = new BookingsDatabase(getAppContext());
+        }
+        return database;
+
     }
 }

@@ -1,5 +1,6 @@
 package com.bistelapp.bistel.drivers;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBarActivity;
@@ -103,6 +104,15 @@ public class DriverHomeActivity extends ActionBarActivity implements LoadAddress
         }else {
             UpdateLocation updateLocation = new UpdateLocation(DriverHomeActivity.this, location+ "|" + latitude + "," + longitude);
             updateLocation.update_rider_location();
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Intent intent = getIntent();
+        if(intent != null){
+
         }
     }
 }

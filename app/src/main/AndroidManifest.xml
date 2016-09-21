@@ -148,9 +148,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.bistelapp.bistel.riders.RiderActivity" />
         </activity>
-        <activity android:name=".TestingActivity"
+        <activity
+            android:name=".TestingActivity"
             android:label="@string/testing"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".riders.DisplayBookingsActivity"></activity>
     </application>
 
 </manifest>

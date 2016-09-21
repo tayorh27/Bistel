@@ -1,7 +1,9 @@
 package com.bistelapp.bistel.riders;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -18,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bistelapp.bistel.DonateActivity2;
+import com.bistelapp.bistel.MyApplication;
 import com.bistelapp.bistel.PaymentActivity;
 import com.bistelapp.bistel.R;
 import com.bistelapp.bistel.database.rider.UserLocalStorage;
@@ -131,7 +134,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
                 startActivity(new Intent(getActivity(),PaymentActivity.class));
                 break;
             case 2://trip history
-                startActivity(new Intent(getActivity(),HistoryActivity.class));
+                startActivity(new Intent(getActivity(),DisplayBookingsActivity.class));//HistoryActivity
                 break;
             case 3://vouchers
                 startActivity(new Intent(getActivity(),VoucherActivity.class));
@@ -146,8 +149,26 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
                 startActivity(new Intent(getActivity(),SupportActivity.class));
                 break;
             case 7://logout
-                userLocalStorage.clearDatabase();
-                general.Logout();
+                final AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+                alertDialog.setTitle("Confirmation");
+                alertDialog.setCancelable(true);
+                alertDialog.setMessage("Are you sure you want to Logout?");
+                alertDialog.setButton("NO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        alertDialog.dismiss();
+                    }
+                });
+                alertDialog.setButton2("YES", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        userLocalStorage.clearDatabase();
+                        MyApplication.getWritableDatabase().deleteAll();
+                        general.Logout();
+                        alertDialog.dismiss();
+                    }
+                });
+                alertDialog.show();
                 break;
         }
         selectItem(position);

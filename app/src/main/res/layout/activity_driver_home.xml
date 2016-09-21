@@ -4,39 +4,323 @@
     android:id="@+id/driver_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.bistelapp.bistel.drivers.DriverHomeActivity">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/status"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Go online"
-            style="@style/Base.TextAppearance.AppCompat.Widget.Button"
-            android:background="@color/myAccentColor"
-            android:layout_gravity="center_horizontal"
-            android:tag="online"
-            android:onClick="DriverStatus"/>
+            android:orientation="vertical">
 
-    </LinearLayout>
+            <Button
+                android:id="@+id/status"
+                style="@style/Base.TextAppearance.AppCompat.Widget.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="20dp"
+                android:background="@color/myAccentColor"
+                android:onClick="DriverStatus"
+                android:tag="online"
+                android:text="Go online" />
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/myDrawerBackground"
+                android:visibility="visible">
+
+
+                <RelativeLayout
+                    android:id="@+id/pi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/myDrawerBackground">
+
+                    <TextView
+                        android:id="@+id/tv_rider1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/myDrawerBackground"
+                        android:padding="20dp"
+                        android:text="Rider Name:"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/tv_rider_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:background="@color/myDrawerBackground"
+                        android:padding="20dp"
+                        android:text="Aderinsola Tella"
+                        android:textColor="@color/myPrimaryColor"
+                        android:textSize="20sp" />
+
+                    <View
+                        android:id="@+id/vi"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@+id/tv_rider1"
+                        android:layout_margin="5dp"
+                        android:background="#ccc" />
+
+                    <TextView
+                        android:id="@+id/tv_rider2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/vi"
+                        android:background="@color/myDrawerBackground"
+                        android:padding="20dp"
+                        android:text="Rider Phone:"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/tv_rider_phone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_below="@+id/vi"
+                        android:autoLink="phone"
+                        android:background="@color/myDrawerBackground"
+                        android:padding="20dp"
+                        android:text="08166076456"
+                        android:textColor="@color/myPrimaryColor"
+                        android:textSize="20sp" />
+
+                    <View
+                        android:id="@+id/vi2"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@+id/tv_rider_phone"
+                        android:layout_margin="5dp"
+                        android:background="#ccc" />
+
+                    <TextView
+                        android:id="@+id/tv_rider3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/vi2"
+                        android:background="@color/myDrawerBackground"
+                        android:padding="20dp"
+                        android:text="Pick-Up Location:"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/tv_pickUp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_above="@+id/vi3"
+                        android:layout_alignParentRight="true"
+                        android:background="@color/myDrawerBackground"
+                        android:text="Mariere Pass, Lagos, Nigeria"
+                        android:textColor="@color/myPrimaryDarkColor"
+                        android:textSize="12sp" />
+
+                    <View
+                        android:id="@+id/vi3"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@+id/tv_rider3"
+                        android:layout_margin="5dp"
+                        android:background="#ccc" />
+
+                    <TextView
+                        android:id="@+id/tv_rider4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/vi3"
+                        android:background="@color/myDrawerBackground"
+                        android:padding="20dp"
+                        android:text="Destination:"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/tv_destination"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_above="@+id/vi4"
+                        android:layout_alignParentRight="true"
+                        android:background="@color/myDrawerBackground"
+                        android:text="Palmgrove Bus-stop, Somolu, Lagos, Nigeria"
+                        android:textColor="@color/myPrimaryDarkColor"
+                        android:textSize="12sp" />
+
+                    <View
+                        android:id="@+id/vi4"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@+id/tv_rider4"
+                        android:layout_margin="5dp"
+                        android:background="#ccc" />
+
+                    <!-- -->
+                    <TextView
+                        android:id="@+id/tv_rider5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/vi4"
+                        android:background="@color/myDrawerBackground"
+                        android:padding="20dp"
+                        android:text="Distance/Time:"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/tv_Dis"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_below="@+id/vi4"
+                        android:background="@color/myDrawerBackground"
+                        android:padding="20dp"
+                        android:text="21.1 km"
+                        android:textColor="@color/myPrimaryColor"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/tv_Time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_above="@+id/vi5"
+                        android:layout_alignParentRight="true"
+                        android:background="@color/myDrawerBackground"
+                        android:text="20 mins"
+                        android:textColor="@color/myPrimaryDarkColor"
+                        android:textSize="12sp" />
+
+                    <View
+                        android:id="@+id/vi5"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@+id/tv_rider5"
+                        android:layout_margin="5dp"
+                        android:background="#ccc" />
+
+                    <Button
+                        android:id="@+id/startEnd"
+                        style="@style/Widget.AppCompat.Button.Colored"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/vi5"
+                        android:background="#000"
+                        android:text="Start Trip"
+                        android:textColor="#fff" />
+
+                    <!-- Navigate menu-->
+                    <!--<TextView-->
+                    <!--android:id="@+id/tv_amount_distance_price"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_alignParentRight="true"-->
+                    <!--android:layout_below="@+id/vi"-->
+                    <!--android:background="@color/myDrawerBackground"-->
+                    <!--android:padding="20dp"-->
+                    <!--android:text="₦80"-->
+                    <!--android:textColor="@color/myPrimaryColor"-->
+                    <!--android:textSize="20sp" />-->
+
+                    <!--<TextView-->
+                    <!--android:id="@+id/tv_distance"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_above="@+id/vi2"-->
+                    <!--android:layout_alignParentRight="true"-->
+                    <!--android:background="@color/myDrawerBackground"-->
+                    <!--android:text="0 Km"-->
+                    <!--android:textColor="@color/myPrimaryDarkColor"-->
+                    <!--android:textSize="12sp" />-->
+
+                    <!--<View-->
+                    <!--android:id="@+id/vi3"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="1dp"-->
+                    <!--android:layout_below="@+id/tv_amount_distance"-->
+                    <!--android:layout_margin="5dp"-->
+                    <!--android:background="#ccc" />-->
+
+                    <!--<TextView-->
+                    <!--android:id="@+id/tv_amount_duration"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_below="@+id/vi2"-->
+                    <!--android:background="@color/myDrawerBackground"-->
+                    <!--android:padding="20dp"-->
+                    <!--android:text="Amount per Duration"-->
+                    <!--android:textSize="20sp" />-->
+
+                    <!--<TextView-->
+                    <!--android:id="@+id/tv_amount_duration_price"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_alignParentRight="true"-->
+                    <!--android:layout_below="@+id/vi2"-->
+                    <!--android:background="@color/myDrawerBackground"-->
+                    <!--android:padding="20dp"-->
+                    <!--android:text="₦20"-->
+                    <!--android:textColor="@color/myPrimaryColor"-->
+                    <!--android:textSize="20sp" />-->
+
+                    <!--<TextView-->
+                    <!--android:id="@+id/tv_duration"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_above="@+id/vi3"-->
+                    <!--android:layout_alignParentRight="true"-->
+                    <!--android:background="@color/myDrawerBackground"-->
+                    <!--android:text="0 min"-->
+                    <!--android:textColor="@color/myPrimaryDarkColor"-->
+                    <!--android:textSize="12sp" />-->
+
+                    <!--<View-->
+                    <!--android:id="@+id/vi3"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="1dp"-->
+                    <!--android:layout_below="@+id/tv_amount_duration"-->
+                    <!--android:layout_margin="5dp"-->
+                    <!--android:background="#ccc" />-->
+
+                    <!--<TextView-->
+                    <!--android:id="@+id/notification"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_below="@+id/vi3"-->
+                    <!--android:background="@color/myDrawerBackground"-->
+                    <!--android:text="*Amount is negotiable with the driver"-->
+                    <!--android:textColor="@color/myAccentColor"-->
+                    <!--android:textSize="12sp" />-->
+
+                    <!--<Button-->
+                    <!--style="@style/Widget.AppCompat.Button.Colored"-->
+                    <!--android:id="@+id/call_now"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_below="@+id/notification"-->
+                    <!--android:layout_marginTop="5dp"-->
+                    <!--android:background="#000"-->
+                    <!--android:text="Call Driver"-->
+                    <!--android:textColor="#fff" />-->
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+        </LinearLayout>
+
+    </ScrollView>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <ProgressBar
+            android:id="@+id/progressBar"
             style="?android:attr/progressBarStyleLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/progressBar"
             android:layout_gravity="center" />
     </FrameLayout>
 

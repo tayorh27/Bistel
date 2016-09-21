@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/Base.CardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="1dp"
+            android:background="#fff">
+
+            <RelativeLayout
+                android:id="@+id/view1"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/custom_comment_dp"
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/avatar_default"
+                    app:civ_border_color="#171a0d1a"
+                    app:civ_border_width="1dp" />
+
+
+                <TextView
+                    android:id="@+id/first"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/custom_comment_dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Aderinsola"
+                    android:textColor="@color/myPrimaryColor"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/plate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/first"
+                    android:layout_marginTop="10dp"
+                    android:text="Plate Number"
+                    android:textColor="@color/myPrimaryColor"
+                    android:textSize="15sp" />
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/image_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/view1"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/ic_alarm_black_18px" />
+
+            <TextView
+                android:id="@+id/status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/view1"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="2dp"
+                android:layout_toRightOf="@+id/image_status"
+                android:text="13-Jul-2016 : 3.56pm"
+                android:textColor="@color/myPrimaryColor"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/kilometer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/view1"
+                android:layout_margin="10dp"
+                android:text="19.9 km | 35 mins"
+                android:textColor="@color/myPrimaryColor"
+                android:textSize="12sp" />
+
+            <RelativeLayout
+                android:id="@+id/topbar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true">
+
+                <TextView
+                    android:id="@+id/location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="5dp"
+                    android:text="₦1510 | Cash"
+                    android:textColor="@color/myPrimaryColor"
+                    android:textSize="15sp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/sidebar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_toRightOf="@+id/view1">
+
+                <ImageView
+                    android:id="@+id/book"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/ic_my_location_black_24px" />
+
+                <TextView
+                    android:id="@+id/pickup_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_toRightOf="@+id/book"
+                    android:ellipsize="marquee"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:scrollHorizontally="true"
+                    android:singleLine="true"
+                    android:text="Faculty of Engineering, Sapara Rd, Lagos, Nigeria"
+                    android:textColor="@color/myPrimaryColor"
+                    android:textSize="15sp" />
+
+                <ImageView
+                    android:id="@+id/request"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/book"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="0dp"
+                    android:src="@drawable/ic_more_vert_black_24px" />
+
+                <ImageView
+                    android:id="@+id/dest_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/request"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="0dp"
+                    android:src="@drawable/ic_directions_black_24px" />
+
+                <TextView
+                    android:layout_toRightOf="@+id/dest_icon"
+                    android:id="@+id/dest_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="60dp"
+                    android:ellipsize="marquee"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:scrollHorizontally="true"
+                    android:singleLine="true"
+                    android:text="Eko Hotels and Suites, Eti-Osa, Lagos, Nigeria"
+                    android:textColor="@color/myPrimaryColor"
+                    android:textSize="15sp" />
+
+                <!--<ImageView-->
+                <!--android:id="@+id/loc"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_below="@+id/request"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:src="@drawable/abc_btn_radio_to_on_mtrl_015"/>-->
+
+
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+</android.support.v7.widget.CardView>
