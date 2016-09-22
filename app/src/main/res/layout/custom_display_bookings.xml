@@ -7,8 +7,10 @@
     android:layout_margin="5dp">
 
     <RelativeLayout
+        android:id="@+id/bookings"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:longClickable="true">
 
         <RelativeLayout
             android:layout_width="match_parent"

@@ -22,8 +22,10 @@ import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.bistelapp.bistel.MainActivity;
+import com.bistelapp.bistel.MyApplication;
 import com.bistelapp.bistel.R;
 import com.bistelapp.bistel.informations.driver.driver_info;
+import com.bistelapp.bistel.informations.rider.Bookings;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -352,9 +354,25 @@ public class General {
 
         return customData;
     }
-    //1456 + 4 = 1460
-    //1453 - 3 = 1450
-    //1455
+
+    public void LoadDB(){
+        ArrayList<Bookings> currentData = new ArrayList<>();
+        Bookings current = new Bookings();
+        current.get_id = "0";
+        current.driver_name = "none";
+        current.driver_number = "none";
+        current.driver_player_id = "none";
+        current.plateNumber = "none";
+        current.pickUp = "none";
+        current.destination = "none";
+        current.distance = "none";
+        current.time = "none";
+        current.amount = "none";
+        current.payment_type = "none";
+        current.booked_date = "none";
+        currentData.add(current);
+        MyApplication.getWritableDatabase().insertMyPost(currentData,false);
+    }
 
     public int totalAmount(double figure) {
         int r_totalAmount = 0;

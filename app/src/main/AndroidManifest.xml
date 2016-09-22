@@ -152,7 +152,12 @@
             android:name=".TestingActivity"
             android:label="@string/testing"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".riders.DisplayBookingsActivity"></activity>
+        <activity android:name=".riders.DisplayBookingsActivity"
+            android:label="@string/history_d">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.bistelapp.bistel.riders.RiderActivity" />
+        </activity>
     </application>
 
 </manifest>

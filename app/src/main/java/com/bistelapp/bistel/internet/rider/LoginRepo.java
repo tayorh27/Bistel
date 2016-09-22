@@ -9,9 +9,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.bistelapp.bistel.AppConfig;
-import com.bistelapp.bistel.MyApplication;
 import com.bistelapp.bistel.database.rider.UserLocalStorage;
-import com.bistelapp.bistel.informations.rider.Bookings;
 import com.bistelapp.bistel.informations.rider.rider_info;
 import com.bistelapp.bistel.network.VolleySingleton;
 import com.bistelapp.bistel.riders.RiderActivity;
@@ -20,8 +18,6 @@ import com.bistelapp.bistel.utility.General;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 /**
  * Created by tayo on 4/8/2016.
@@ -79,7 +75,7 @@ public class LoginRepo {
                             rider_info current = new rider_info(id, first, last, email, mobile, get_password, current_location,voucher,voucher_status,playerID,0);
                             userLocalStorage.storeUser(current);
                             userLocalStorage.setUserLogged(true);
-                            LoadDB();
+                            general.LoadDB();
                             general.dismissProgressDialog();
 
                             context.startActivity(new Intent(context, RiderActivity.class));
@@ -100,24 +96,5 @@ public class LoginRepo {
             }
         });
         requestQueue.add(jsonArrayRequest);
-    }
-
-    public void LoadDB(){
-        ArrayList<Bookings> currentData = new ArrayList<>();
-        Bookings current = new Bookings();
-        current.get_id = "0";
-        current.driver_name = "none";
-        current.driver_number = "none";
-        current.driver_player_id = "none";
-        current.plateNumber = "none";
-        current.pickUp = "none";
-        current.destination = "none";
-        current.distance = "none";
-        current.time = "none";
-        current.amount = "none";
-        current.payment_type = "none";
-        current.booked_date = "none";
-        currentData.add(current);
-        MyApplication.getWritableDatabase().insertMyPost(currentData,false);
     }
 }
